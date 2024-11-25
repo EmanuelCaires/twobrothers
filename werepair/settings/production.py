@@ -1,44 +1,50 @@
 from .base import *
-import os
 
 DEBUG = config('DEBUG', cast=bool, default=False)
 
-# Allowed Hosts
 ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    '8000-emanuelcaire-werepairio-pwt2icriu17.ws-eu116.gitpod.io',
+    'ip-address',  # Replace with your production IP or domain
+    'www.your-website.com',  # Replace with your domain
 ]
 
-
-# CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
-    'https://8000-emanuelcaire-werepairio-pwt2icriu17.ws-eu116.gitpod.io',
-    'https://localhost',
-    'https://127.0.0.1',
+    'https://www.your-website.com',  # Replace with your domain
 ]
 
+# Email backend (SMTP for production)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST')  # E.g., smtp.gmail.com for Gmail
+EMAIL_PORT = config('EMAIL_PORT', cast=int, default=587)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool, default=True)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')  # Your email account user
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # Your email account password
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='webmaster@yourdomain.com')
 
-
-# Secure cookies based on environment
-CSRF_COOKIE_SECURE = not DEBUG
-SESSION_COOKIE_SECURE = not DEBUG
-
-# Database Configuration (PostgreSQL for production)
+# Database (PostgreSQL for production)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DB_NAME', default='default_db_name'),
-        'USER': config('DB_USER', default='default_user'),
-        'PASSWORD': config('DB_PASSWORD', default='default_password'),
-        'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default='5432'),
+        'NAME': config('DB_NAME'),  # Your database name
+        'USER': config('DB_USER'),  # Your database user
+        'PASSWORD': config('DB_PASSWORD'),  # Your database password
+        'HOST': config('DB_HOST'),  # Database host, e.g., localhost or an IP address
+        'PORT': config('DB_PORT', default='5432'),  # Default PostgreSQL port
     }
 }
 
-# Stripe Keys (Live for production)
-STRIPE_PUBLIC_KEY = config('STRIPE_LIVE_PUBLIC_KEY')
-STRIPE_SECRET_KEY = config('STRIPE_LIVE_SECRET_KEY')
+# Stripe (live keys)
+STRIPE_PUBLIC_KEY = config('STRIPE_LIVE_PUBLIC_KEY')  # Live public key
+STRIPE_SECRET_KEY = config('STRIPE_LIVE_SECRET_KEY')  # Live secret key
 
+# Security settings for production
+SECURE_SSL_REDIRECT = True  # Forces redirect to HTTPS
+SESSION_COOKIE_SECURE = True  # Ensures cookies are only sent over HTTPS
+CSRF_COOKIE_SECURE = True  # Ensures CSRF cookies are only sent over HTTPS
+X_FRAME_OPTIONS = 'DENY'  # Protects against clickjacking
 
+# Additional security settings
+SECURE_HSTS_SECONDS = 31536000  # Enforces HTTPS for a year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 

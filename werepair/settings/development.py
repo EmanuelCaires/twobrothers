@@ -1,32 +1,30 @@
 from .base import *
-import os
 
-DEBUG = config('DEBUG', cast=bool, default=True)
+DEBUG = True
 
-# Allowed Hosts
 ALLOWED_HOSTS = [
+    '8000-emanuelcaire-werepairio-rpnsaofi34a.ws-eu116.gitpod.io',
     'localhost',
     '127.0.0.1',
-    '8000-emanuelcaire-werepairio-pwt2icriu17.ws-eu116.gitpod.io',
 ]
 
-# CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
-    'https://8000-emanuelcaire-werepairio-pwt2icriu17.ws-eu116.gitpod.io',
-    'https://localhost',
-    'https://127.0.0.1',
+    'https://8000-emanuelcaire-werepairio-rpnsaofi34a.ws-eu116.gitpod.io',
 ]
 
+# Email backend (console for development)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# Secure cookies based on environment
-CSRF_COOKIE_SECURE = not DEBUG
-SESSION_COOKIE_SECURE = not DEBUG
+# Debug toolbar
+INSTALLED_APPS += ['debug_toolbar']
+MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
 
-# Stripe Keys
-STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC_KEY')
-STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET_KEY')
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+    'SHOW_TOOLBAR_CALLBACK': lambda request: True,
+}
 
-# Database Configuration (SQLite for development)
+# Database configuration for development (SQLite)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -34,31 +32,7 @@ DATABASES = {
     }
 }
 
-# Debug Toolbar (Development only)
-INSTALLED_APPS += ['debug_toolbar']
-MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
-
-DEBUG_TOOLBAR_PANELS = [
-    'debug_toolbar.panels.versions.VersionsPanel',
-    'debug_toolbar.panels.timer.TimerPanel',
-    'debug_toolbar.panels.settings.SettingsPanel',
-    'debug_toolbar.panels.headers.HeadersPanel',
-    'debug_toolbar.panels.request.RequestPanel',
-    'debug_toolbar.panels.sql.SQLPanel',
-    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-    'debug_toolbar.panels.templates.TemplatesPanel',
-    'debug_toolbar.panels.cache.CachePanel',
-    'debug_toolbar.panels.signals.SignalsPanel',
-    'debug_toolbar.panels.logging.LoggingPanel',
-    'debug_toolbar.panels.redirects.RedirectsPanel',
-]
-
-def show_toolbar(request):
-    return True
-
-DEBUG_TOOLBAR_CONFIG = {
-    'INTERCEPT_REDIRECTS': False,
-    'SHOW_TOOLBAR_CALLBACK': show_toolbar
-}
-
+# Stripe test keys (from .env or environment variables)
+STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC_KEY', default=None)
+STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET_KEY', default=None)
 
