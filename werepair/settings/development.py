@@ -1,20 +1,43 @@
 from .base import *
+import os
 
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool, default=True)
 
+# Allowed Hosts
 ALLOWED_HOSTS = [
-    '8000-emanuelcaire-werepairio-pwt2icriu17.ws-eu116.gitpod.io',
     'localhost',
-    '127.0.0.1'
+    '127.0.0.1',
+    '8000-emanuelcaire-werepairio-pwt2icriu17.ws-eu116.gitpod.io',
 ]
 
-INSTALLED_APPS += [
-    'debug_toolbar'
+# CSRF Trusted Origins
+CSRF_TRUSTED_ORIGINS = [
+    'https://8000-emanuelcaire-werepairio-pwt2icriu17.ws-eu116.gitpod.io',
+    'https://localhost',
+    'https://127.0.0.1',
 ]
 
-MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
 
-# DEBUG TOOLBAR SETTINGS
+# Secure cookies based on environment
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+
+# Stripe Keys
+STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC_KEY')
+STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET_KEY')
+
+# Database Configuration (SQLite for development)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+# Debug Toolbar (Development only)
+INSTALLED_APPS += ['debug_toolbar']
+MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
+
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
     'debug_toolbar.panels.timer.TimerPanel',
@@ -38,12 +61,4 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': show_toolbar
 }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
-STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC_KEY')
-STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET_KEY')
