@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Phone Case Replacement Parts</h2>
+<div class="product-list">
+    {% for phone_case_part in phone_case_parts %}
+    <div class="product-item">
+        <img src="{{ phone_case_part.image.url }}" alt="{{ phone_case_part.name }}">
+        <h3><a href="{{ phone_case_part.get_absolute_url }}">{{ phone_case_part.name }}</a></h3>
+        <p>{{ phone_case_part.description }}</p>
+        <p>${{ phone_case_part.price }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

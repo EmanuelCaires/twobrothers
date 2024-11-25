@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Phones</h2>
+<div class="product-list">
+    {% for phone_part in phone_parts %}
+    <div class="product-item">
+        <img src="{{ phone_part.image.url }}" alt="{{ phone_part.name }}">
+        <h3><a href="{{ phone_part.get_absolute_url }}">{{ phone_part.name }}</a></h3>
+        <p>{{ phone_part.description }}</p>
+        <p>${{ phone_part.price }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -9,6 +9,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView, DetailView
+from core.models import PhonePart, PhoneCase, PhoneCasePart, ReplacementPart
+
+
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
 
@@ -35,6 +39,62 @@ def is_valid_form(values):
         if field == '':
             valid = False
     return valid
+
+# List Views
+class PhonePartListView(ListView):
+    model = PhonePart
+    template_name = 'phone_part_list.html'
+    context_object_name = 'phone_parts'
+
+class PhoneCaseListView(ListView):
+    model = PhoneCase
+    template_name = 'phone_case_list.html'
+    context_object_name = 'phone_cases'
+
+class PhoneCasePartListView(ListView):
+    model = PhoneCasePart
+    template_name = 'phone_case_part_list.html'
+    context_object_name = 'phone_case_parts'
+
+class ReplacementPartsListView(ListView):
+    model = ReplacementPart
+    template_name = 'replacement_part_list.html'
+    context_object_name = 'replacement_parts'
+
+
+class ReplacementPartDetailView(DetailView):
+    model = ReplacementPart
+    template_name = 'replacement_part_detail.html'
+    context_object_name = 'part'
+
+# Detail Views
+def phone_part_detail(request, slug):
+    phone_part = get_object_or_404(PhonePart, slug=slug)
+    return render(request, 'phone_part_detail.html', {'phone_part': phone_part})
+
+def phone_case_detail(request, slug):
+    phone_case = get_object_or_404(PhoneCase, slug=slug)
+    return render(request, 'phone_case_detail.html', {'phone_case': phone_case})
+
+def phone_case_part_detail(request, slug):
+    phone_case_part = get_object_or_404(PhoneCasePart, slug=slug)
+    return render(request, 'phone_case_part_detail.html', {'phone_case_part': phone_case_part})
+
+# View for listing all replacement parts
+def replacement_part_list(request):
+    # Get all replacement parts from the database
+    replacement_parts = ReplacementPart.objects.all()
+
+    # Render the template with the list of parts
+    return render(request, 'replacement_part_list.html', {'replacement_parts': replacement_parts})
+
+# View for displaying a single replacement part's details
+def replacement_part_detail(request, part_id):
+    # Get the specific replacement part by its ID
+    part = get_object_or_404(ReplacementPart, id=part_id)
+
+    # Render the template with the part details
+    return render(request, 'replacement_part_detail.html', {'part': part})
 
 
 class CheckoutView(View):
