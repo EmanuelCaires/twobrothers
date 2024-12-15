@@ -1,8 +1,0 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<h2>{{ phone_part.name }}</h2>
-<img src="{{ phone_part.image.url }}" alt="{{ phone_part.name }}">
-<p>{{ phone_part.description }}</p>
-<p>Price: ${{ phone_part.price }}</p>
-{% endblock %}

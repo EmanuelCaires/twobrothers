@@ -23,14 +23,15 @@ DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='webmaster@yourdomain.
 # Database (PostgreSQL for production)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DB_NAME'),  # Your database name
-        'USER': config('DB_USER'),  # Your database user
-        'PASSWORD': config('DB_PASSWORD'),  # Your database password
-        'HOST': config('DB_HOST'),  # Database host, e.g., localhost or an IP address
-        'PORT': config('DB_PORT', default='5432'),  # Default PostgreSQL port
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'your_database_name',  # CloudBase DB name
+        'USER': 'your_database_user',  # CloudBase DB user
+        'PASSWORD': 'your_database_password',  # CloudBase DB password
+        'HOST': 'your_cloudbase_host',  # CloudBase host URL (provided)
+        'PORT': '5432',  # Default PostgreSQL port (unless specified otherwise)
     }
 }
+
 
 # Stripe (live keys)
 STRIPE_PUBLIC_KEY = config('STRIPE_LIVE_PUBLIC_KEY')  # Live public key

@@ -9,10 +9,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView
-from core.models import PhonePart, PhoneCase, PhoneCasePart, ReplacementPart
-
-
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
 
@@ -40,62 +36,12 @@ def is_valid_form(values):
             valid = False
     return valid
 
-# List Views
-class PhonePartListView(ListView):
-    model = PhonePart
-    template_name = 'phone_part_list.html'
-    context_object_name = 'phone_parts'
 
-class PhoneCaseListView(ListView):
-    model = PhoneCase
-    template_name = 'phone_case_list.html'
-    context_object_name = 'phone_cases'
-
-class PhoneCasePartListView(ListView):
-    model = PhoneCasePart
-    template_name = 'phone_case_part_list.html'
-    context_object_name = 'phone_case_parts'
-
-class ReplacementPartsListView(ListView):
-    model = ReplacementPart
-    template_name = 'replacement_part_list.html'
-    context_object_name = 'replacement_parts'
-
-
-class ReplacementPartDetailView(DetailView):
-    model = ReplacementPart
-    template_name = 'replacement_part_detail.html'
-    context_object_name = 'part'
-
-# Detail Views
-def phone_part_detail(request, slug):
-    phone_part = get_object_or_404(PhonePart, slug=slug)
-    return render(request, 'phone_part_detail.html', {'phone_part': phone_part})
-
-def phone_case_detail(request, slug):
-    phone_case = get_object_or_404(PhoneCase, slug=slug)
-    return render(request, 'phone_case_detail.html', {'phone_case': phone_case})
-
-def phone_case_part_detail(request, slug):
-    phone_case_part = get_object_or_404(PhoneCasePart, slug=slug)
-    return render(request, 'phone_case_part_detail.html', {'phone_case_part': phone_case_part})
-
-# View for listing all replacement parts
-def replacement_part_list(request):
-    # Get all replacement parts from the database
-    replacement_parts = ReplacementPart.objects.all()
-
-    # Render the template with the list of parts
-    return render(request, 'replacement_part_list.html', {'replacement_parts': replacement_parts})
-
-# View for displaying a single replacement part's details
-def replacement_part_detail(request, part_id):
-    # Get the specific replacement part by its ID
-    part = get_object_or_404(ReplacementPart, id=part_id)
-
-    # Render the template with the part details
-    return render(request, 'replacement_part_detail.html', {'part': part})
-
+class AllProductsView(ListView):
+    model = Item
+    template_name = 'core/all_products.html'
+    context_object_name = 'products'
+    
 
 class CheckoutView(View):
     def get(self, *args, **kwargs):
@@ -140,7 +86,7 @@ class CheckoutView(View):
                 use_default_shipping = form.cleaned_data.get(
                     'use_default_shipping')
                 if use_default_shipping:
-                    print("Using the defualt shipping address")
+                    print("Using the default shipping address")
                     address_qs = Address.objects.filter(
                         user=self.request.user,
                         address_type='S',
@@ -203,7 +149,7 @@ class CheckoutView(View):
                     order.save()
 
                 elif use_default_billing:
-                    print("Using the defualt billing address")
+                    print("Using the default billing address")
                     address_qs = Address.objects.filter(
                         user=self.request.user,
                         address_type='B',
@@ -367,38 +313,30 @@ class PaymentView(View):
                 return redirect("/")
 
             except stripe.error.RateLimitError as e:
-                # Too many requests made to the API too quickly
                 messages.warning(self.request, "Rate limit error")
                 return redirect("/")
 
             except stripe.error.InvalidRequestError as e:
-                # Invalid parameters were supplied to Stripe's API
                 print(e)
                 messages.warning(self.request, "Invalid parameters")
                 return redirect("/")
 
             except stripe.error.AuthenticationError as e:
-                # Authentication with Stripe's API failed
-                # (maybe you changed API keys recently)
                 messages.warning(self.request, "Not authenticated")
                 return redirect("/")
 
             except stripe.error.APIConnectionError as e:
-                # Network communication with Stripe failed
                 messages.warning(self.request, "Network error")
                 return redirect("/")
 
             except stripe.error.StripeError as e:
-                # Display a very generic error to the user, and maybe send
-                # yourself an email
                 messages.warning(
                     self.request, "Something went wrong. You were not charged. Please try again.")
                 return redirect("/")
 
             except Exception as e:
-                # send an email to ourselves
                 messages.warning(
-                    self.request, "A serious error occurred. We have been notifed.")
+                    self.request, "A serious error occurred. We have been notified.")
                 return redirect("/")
 
         messages.warning(self.request, "Invalid data received")
@@ -440,7 +378,6 @@ def add_to_cart(request, slug):
     order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
         order = order_qs[0]
-        # check if the order item is in the order
         if order.items.filter(item__slug=item.slug).exists():
             order_item.quantity += 1
             order_item.save()
@@ -468,7 +405,6 @@ def remove_from_cart(request, slug):
     )
     if order_qs.exists():
         order = order_qs[0]
-        # check if the order item is in the order
         if order.items.filter(item__slug=item.slug).exists():
             order_item = OrderItem.objects.filter(
                 item=item,
@@ -480,100 +416,32 @@ def remove_from_cart(request, slug):
             messages.info(request, "This item was removed from your cart.")
             return redirect("core:order-summary")
         else:
-            messages.info(request, "This item was not in your cart")
-            return redirect("core:product", slug=slug)
-    else:
-        messages.info(request, "You do not have an active order")
-        return redirect("core:product", slug=slug)
-
-
-@login_required
-def remove_single_item_from_cart(request, slug):
-    item = get_object_or_404(Item, slug=slug)
-    order_qs = Order.objects.filter(
-        user=request.user,
-        ordered=False
-    )
-    if order_qs.exists():
-        order = order_qs[0]
-        # check if the order item is in the order
-        if order.items.filter(item__slug=item.slug).exists():
-            order_item = OrderItem.objects.filter(
-                item=item,
-                user=request.user,
-                ordered=False
-            )[0]
-            if order_item.quantity > 1:
-                order_item.quantity -= 1
-                order_item.save()
-            else:
-                order.items.remove(order_item)
-            messages.info(request, "This item quantity was updated.")
+            messages.info(request, "This item is not in your cart.")
             return redirect("core:order-summary")
-        else:
-            messages.info(request, "This item was not in your cart")
-            return redirect("core:product", slug=slug)
     else:
-        messages.info(request, "You do not have an active order")
-        return redirect("core:product", slug=slug)
-
-
-def get_coupon(request, code):
-    try:
-        coupon = Coupon.objects.get(code=code)
-        return coupon
-    except ObjectDoesNotExist:
-        messages.info(request, "This coupon does not exist")
-        return redirect("core:checkout")
+        messages.info(request, "You do not have an active order.")
+        return redirect("core:order-summary")
 
 
 class AddCouponView(View):
     def post(self, *args, **kwargs):
-        form = CouponForm(self.request.POST or None)
-        if form.is_valid():
-            try:
-                code = form.cleaned_data.get('code')
-                order = Order.objects.get(
-                    user=self.request.user, ordered=False)
-                order.coupon = get_coupon(self.request, code)
-                order.save()
-                messages.success(self.request, "Successfully added coupon")
-                return redirect("core:checkout")
-            except ObjectDoesNotExist:
-                messages.info(self.request, "You do not have an active order")
-                return redirect("core:checkout")
+        coupon_code = self.request.POST.get('coupon_code')
+        try:
+            coupon = Coupon.objects.get(code=coupon_code)
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            order.coupon = coupon
+            order.save()
+            messages.success(self.request, "Coupon applied successfully!")
+            return redirect("core:order-summary")
+        except Coupon.DoesNotExist:
+            messages.error(self.request, "Invalid coupon code.")
+            return redirect("core:order-summary")
 
+
+from django.shortcuts import render
+from django.views import View
 
 class RequestRefundView(View):
-    def get(self, *args, **kwargs):
-        form = RefundForm()
-        context = {
-            'form': form
-        }
-        return render(self.request, "request_refund.html", context)
-
-    def post(self, *args, **kwargs):
-        form = RefundForm(self.request.POST)
-        if form.is_valid():
-            ref_code = form.cleaned_data.get('ref_code')
-            message = form.cleaned_data.get('message')
-            email = form.cleaned_data.get('email')
-            # edit the order
-            try:
-                order = Order.objects.get(ref_code=ref_code)
-                order.refund_requested = True
-                order.save()
-
-                # store the refund
-                refund = Refund()
-                refund.order = order
-                refund.reason = message
-                refund.email = email
-                refund.save()
-
-                messages.info(self.request, "Your request was received.")
-                return redirect("core:request-refund")
-
-            except ObjectDoesNotExist:
-                messages.info(self.request, "This order does not exist.")
-                return redirect("core:request-refund")
+    def get(self, request, *args, **kwargs):
+        # Your logic for the refund request page
+        return render(request, 'request_refund.html')

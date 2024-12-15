@@ -1,5 +1,11 @@
+
 from django.contrib import admin
+
 from .models import Item, OrderItem, Order, Payment, Coupon, Refund, Address, UserProfile
+
+from .models import Category
+
+admin.site.register(Category)
 
 
 def make_refund_accepted(modeladmin, request, queryset):
@@ -19,17 +25,39 @@ class OrderAdmin(admin.ModelAdmin):
                     'shipping_address',
                     'billing_address',
                     'payment',
-                    'coupon']
-    list_display_links = ['user', 'shipping_address', 'billing_address', 'payment', 'coupon']
-    list_filter = ['ordered', 'being_delivered', 'received', 'refund_requested', 'refund_granted']
-    search_fields = ['user__username', 'ref_code']
+                    'coupon'
+                    ]
+    list_display_links = [
+        'user',
+        'shipping_address',
+        'billing_address',
+        'payment',
+        'coupon'
+    ]
+    list_filter = ['ordered',
+                   'being_delivered',
+                   'received',
+                   'refund_requested',
+                   'refund_granted']
+    search_fields = [
+        'user__username',
+        'ref_code'
+    ]
     actions = [make_refund_accepted]
 
 
 class AddressAdmin(admin.ModelAdmin):
-    list_display = ['user', 'street_address', 'apartment_address', 'country', 'zip', 'address_type', 'default']
+    list_display = [
+        'user',
+        'street_address',
+        'apartment_address',
+        'country',
+        'zip',
+        'address_type',
+        'default'
+    ]
     list_filter = ['default', 'address_type', 'country']
-    search_fields = ['user__username', 'street_address', 'apartment_address', 'zip']
+    search_fields = ['user', 'street_address', 'apartment_address', 'zip']
 
 
 admin.site.register(Item)
