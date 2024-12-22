@@ -22,11 +22,21 @@ def create_ref_code():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
 
 
-def products(request):
-    context = {
-        'items': Item.objects.all()
-    }
-    return render(request, "products.html", context)
+def all_products(request):
+    products = Item.objects.all()
+    return render(request, 'core/all_products.html', {'products': products})
+
+def phones(request):
+    phones = Item.objects.filter(category='Phones')
+    return render(request, 'core/product_list.html', {'products': phones})
+
+def cases(request):
+    cases = Item.objects.filter(category='Cases')
+    return render(request, 'core/product_list.html', {'products': cases})
+
+def replacement_parts(request):
+    parts = Item.objects.filter(category='Replacement Parts')
+    return render(request, 'core/product_list.html', {'products': parts})
 
 
 def is_valid_form(values):

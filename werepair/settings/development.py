@@ -1,4 +1,7 @@
 from .base import *
+from decouple import config
+import dj_database_url
+
 
 DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1']
@@ -37,14 +40,11 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': dj_database_url.config(default=config('DATABASE_URL')),
 }
 
-STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC_KEY')
-STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET_KEY')
 
+STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC_KEY', default='your_default_public_key_here')
+STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET_KEY', default='your_default_value_here')
 
 

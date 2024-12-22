@@ -21,16 +21,20 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # Your email account passwo
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='webmaster@yourdomain.com')
 
 # Database (PostgreSQL for production)
+# werepair.io/settings/production.py or your main settings file
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'your_database_name',  # CloudBase DB name
-        'USER': 'your_database_user',  # CloudBase DB user
-        'PASSWORD': 'your_database_password',  # CloudBase DB password
-        'HOST': 'your_cloudbase_host',  # CloudBase host URL (provided)
-        'PORT': '5432',  # Default PostgreSQL port (unless specified otherwise)
+        'NAME': 'werepair_io',
+        'USER': 'werepair_io_user',
+        'PASSWORD': 'aFrB95herlY1tsJeIdl7McmBXoyxblwu',
+        'HOST': 'postgresql://werepair_io_user:aFrB95herlY1tsJeIdl7McmBXoyxblwu@dpg-ctjus82j1k6c73cln0ug-a.frankfurt-postgres.render.com/werepair_io',
+        'PORT': '5432',
     }
 }
+
+
 
 
 # Stripe (live keys)
