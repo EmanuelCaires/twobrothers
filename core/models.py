@@ -1,9 +1,9 @@
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.conf import settings
-from django.db.models import Sum
 from django.shortcuts import reverse
 from django_countries.fields import CountryField
+from django.utils.text import slugify
 
 # Category Model for dynamic category management
 class Category(models.Model):
@@ -40,14 +40,9 @@ class UserProfile(models.Model):
 
 
 class Item(models.Model):
-    CATEGORY_CHOICES = [
-        ('Phones', 'Phones'),
-        ('Cases', 'Cases'),
-        ('Replacement Parts', 'Replacement Parts'),
-    ]
-    
     title = models.CharField(max_length=255)
-    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    slug = models.SlugField(unique=True, blank=True, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField()
     image = models.ImageField(upload_to="product_images/")
@@ -69,6 +64,14 @@ class Item(models.Model):
         return reverse("core:remove_from_cart", kwargs={
             'slug': self.slug
         })
+
+
+def pre_save_item_slug(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = slugify(instance.title)
+
+
+pre_save.connect(pre_save_item_slug, sender=Item)
 
 
 class OrderItem(models.Model):
@@ -181,4 +184,3 @@ def userprofile_receiver(sender, instance, created, *args, **kwargs):
 
 
 post_save.connect(userprofile_receiver, sender=settings.AUTH_USER_MODEL)
-

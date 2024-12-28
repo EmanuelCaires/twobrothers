@@ -11,9 +11,9 @@ from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
-
+from django.core.paginator import Paginator
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
-from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile
+from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile, Category
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -22,21 +22,31 @@ def create_ref_code():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
 
 
-def all_products(request):
-    products = Item.objects.all()
-    return render(request, 'core/all_products.html', {'products': products})
+def product_list(request, category_slug=None):
+    """
+    Displays a list of products. Filters by category if category_slug is provided.
+    Includes pagination for 9 products per page.
+    """
+    category = None  # Initialize category variable
+    items = Product.objects.all()  # type: ignore # Fetch all products
 
-def phones(request):
-    phones = Item.objects.filter(category='Phones')
-    return render(request, 'core/product_list.html', {'products': phones})
+    # Filter products by category if category_slug is provided
+    if category_slug:
+        category = get_object_or_404(Category, slug=category_slug)
+        items = items.filter(category=category)
+    
+    # Implement pagination: 9 products per page
+    paginator = Paginator(items, 9)
+    page = request.GET.get('page')  # Get current page number from query parameters
+    items = paginator.get_page(page)  # Fetch products for the current page
 
-def cases(request):
-    cases = Item.objects.filter(category='Cases')
-    return render(request, 'core/product_list.html', {'products': cases})
+    # Render the template with the filtered and paginated products
+    return render(request, 'product_list.html', {
+        'category_name': category.name if category else "All Products",
+        'items': items,
+    })
 
-def replacement_parts(request):
-    parts = Item.objects.filter(category='Replacement Parts')
-    return render(request, 'core/product_list.html', {'products': parts})
+# Add additional views here as needed
 
 
 def is_valid_form(values):
@@ -46,12 +56,6 @@ def is_valid_form(values):
             valid = False
     return valid
 
-
-class AllProductsView(ListView):
-    model = Item
-    template_name = 'core/all_products.html'
-    context_object_name = 'products'
-    
 
 class CheckoutView(View):
     def get(self, *args, **kwargs):
@@ -447,9 +451,6 @@ class AddCouponView(View):
             messages.error(self.request, "Invalid coupon code.")
             return redirect("core:order-summary")
 
-
-from django.shortcuts import render
-from django.views import View
 
 class RequestRefundView(View):
     def get(self, request, *args, **kwargs):

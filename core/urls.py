@@ -9,11 +9,7 @@ from .views import (
     PaymentView,
     AddCouponView,
     RequestRefundView,
-    AllProductsView,
-    all_products,
-    phones,  # Ensure this view is defined
-    cases,   # Ensure this view is defined
-    replacement_parts,  # Ensure this view is defined
+    product_list,  # Updated view for handling products dynamically by category
 )
 
 app_name = 'core'
@@ -28,8 +24,9 @@ urlpatterns = [
 
     # Product-related views
     path('product/<slug>/', ItemDetailView.as_view(), name='product'),
-    path('products/', all_products, name='all_products'),  # Products list
-    
+    path('products/', product_list, name='product_list'),  # All products
+    path('products/<slug:category_slug>/', product_list, name='product_list_by_category'),  # Filter by category
+
     # Cart actions
     path('add-to-cart/<slug>/', add_to_cart, name='add-to-cart'),
     path('remove-from-cart/<slug>/', remove_from_cart, name='remove-from-cart'),
@@ -40,9 +37,4 @@ urlpatterns = [
 
     # Coupon management
     path('add-coupon/', AddCouponView.as_view(), name='add-coupon'),
-
-    # Additional categories
-    path('phones/', phones, name='phones'),
-    path('cases/', cases, name='cases'),
-    path('replacement-parts/', replacement_parts, name='replacement_parts'),
 ]
