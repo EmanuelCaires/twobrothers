@@ -1,4 +1,9 @@
-from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls import path, include
+from django.contrib import admin
+import debug_toolbar
+from . import views
 from .views import (
     ItemDetailView,
     CheckoutView,
@@ -6,35 +11,33 @@ from .views import (
     OrderSummaryView,
     add_to_cart,
     remove_from_cart,
+    remove_single_item_from_cart,
     PaymentView,
     AddCouponView,
-    RequestRefundView,
-    product_list,  # Updated view for handling products dynamically by category
+    RequestRefundView
 )
 
 app_name = 'core'
 
 urlpatterns = [
-    # Homepage
     path('', HomeView.as_view(), name='home'),
-
-    # Checkout and Order Summary
     path('checkout/', CheckoutView.as_view(), name='checkout'),
     path('order-summary/', OrderSummaryView.as_view(), name='order-summary'),
-
-    # Product-related views
     path('product/<slug>/', ItemDetailView.as_view(), name='product'),
-    path('products/', product_list, name='product_list'),  # All products
-    path('products/<slug:category_slug>/', product_list, name='product_list_by_category'),  # Filter by category
-
-    # Cart actions
     path('add-to-cart/<slug>/', add_to_cart, name='add-to-cart'),
+    path('add-coupon/', AddCouponView.as_view(), name='add-coupon'),
     path('remove-from-cart/<slug>/', remove_from_cart, name='remove-from-cart'),
-
-    # Payment and Refunds
+    path('remove-item-from-cart/<slug>/', remove_single_item_from_cart,
+         name='remove-single-item-from-cart'),
     path('payment/<payment_option>/', PaymentView.as_view(), name='payment'),
     path('request-refund/', RequestRefundView.as_view(), name='request-refund'),
-
-    # Coupon management
-    path('add-coupon/', AddCouponView.as_view(), name='add-coupon'),
+    path('phones/', views.phones_view, name='phones'),
+    path('cases/', views.cases_view, name='cases'),
+    path('replacement-parts/', views.replacement_parts_view, name='replacement_parts'),
+    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
+     path('debug/', include('debug_toolbar.urls', namespace='debug_toolbar')),
+     path('admin/', admin.site.urls),
 ]
+
+
+

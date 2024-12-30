@@ -4,7 +4,7 @@
   <main>
     <div class="container">
 
-      <!-- Navbar -->
+      <!--Navbar-->
       <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5">
 
         <!-- Navbar brand -->
@@ -22,17 +22,35 @@
           <!-- Links -->
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link"href="{% url 'core:product_list' %}">All Products</a>
-
+              <a class="nav-link" href="#">All
                 <span class="sr-only">(current)</span>
               </a>
-            
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/phones">Phones</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/cases">Cases</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/replacement-parts">Replacement Parts</a>
+            </li>
+
+          </ul>
+          <!-- Links -->
+
+          <form class="form-inline">
+            <div class="md-form my-0">
+              <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            </div>
+          </form>
         </div>
+        <!-- Collapsible content -->
 
       </nav>
-      <!-- /.Navbar -->
+      <!--/.Navbar-->
 
-      <!-- Section: Products v.3 -->
+      <!--Section: Products v.3-->
       <section class="text-center mb-4">
 
         <div class="row wow fadeIn">
@@ -43,7 +61,12 @@
             <div class="card">
 
               <div class="view overlay">
+                {% comment %} <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top" {% endcomment %}
+                {% if item.image %}
                 <img src="{{ item.image.url }}" class="card-img-top">
+                {% else %}
+                <img src="default-image-url.jpg" class="card-img-top">
+                {% endif %}
                 <a href="{{ item.get_absolute_url }}">
                   <div class="mask rgba-white-slight"></div>
                 </a>
@@ -62,11 +85,11 @@
                 </h5>
 
                 <h4 class="font-weight-bold blue-text">
-                  <strong>$ 
+                  <strong>$
                   {% if item.discount_price %}
-                    {{ item.discount_price }}
+                  {{ item.discount_price }}
                   {% else %}
-                    {{ item.price }}
+                  {{ item.price }}
                   {% endif %}
                   </strong>
                 </h4>
@@ -80,9 +103,10 @@
         </div>
 
       </section>
-      <!-- Section: Products v.3 -->
+      <!--Section: Products v.3-->
 
-      <!-- Pagination -->
+      <!--Pagination-->
+
       {% if is_paginated %}
       <nav class="d-flex justify-content-center wow fadeIn">
         <ul class="pagination pg-blue">
@@ -118,3 +142,4 @@
   </main>
 
 {% endblock content %}
+

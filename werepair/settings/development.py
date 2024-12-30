@@ -1,11 +1,11 @@
 from .base import *
-from decouple import config
 import dj_database_url
 
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = True
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=lambda v: [s.strip() for s in v.split(',')])
 
-INSTALLED_APPS += [
+
+INSTALLED_APPS = [
     'debug_toolbar'
 ]
 
@@ -28,8 +28,10 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.redirects.RedirectsPanel',
 ]
 
+
 def show_toolbar(request):
     return True
+
 
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
@@ -40,8 +42,6 @@ DATABASES = {
     'default': dj_database_url.config(default=config('DATABASE_URL'))
 }
 
-STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC_KEY', default='your_default_public_key_here')
-STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET_KEY', default='your_default_value_here')
 
-
-
+STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC_KEY')
+STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET_KEY')

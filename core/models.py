@@ -1,21 +1,17 @@
-from django.db import models
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 from django.conf import settings
+from django.db import models
+from django.db.models import Sum
 from django.shortcuts import reverse
 from django_countries.fields import CountryField
-from django.utils.text import slugify
+from django.db import models
 
-# Category Model for dynamic category management
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
 
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name_plural = "Categories"
-
+CATEGORY_CHOICES = (
+    ('P', 'Phones'),
+    ('C', 'Cases'),
+    ('RP', 'Replacement Parts')
+)
 
 LABEL_CHOICES = (
     ('P', 'primary'),
@@ -29,6 +25,14 @@ ADDRESS_CHOICES = (
 )
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+    
+
 class UserProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -40,38 +44,33 @@ class UserProfile(models.Model):
 
 
 class Item(models.Model):
-    title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True, blank=True, null=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    title = models.CharField(max_length=100)
+    price = models.FloatField()
+    discount_price = models.FloatField(blank=True, null=True)
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
+    label = models.CharField(choices=LABEL_CHOICES, max_length=1)
+    slug = models.SlugField()
     description = models.TextField()
-    image = models.ImageField(upload_to="product_images/")
+    image = models.ImageField()
+    discount_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("core:product_detail", kwargs={
+        return reverse("core:product", kwargs={
             'slug': self.slug
         })
 
     def get_add_to_cart_url(self):
-        return reverse("core:add_to_cart", kwargs={
+        return reverse("core:add-to-cart", kwargs={
             'slug': self.slug
         })
 
     def get_remove_from_cart_url(self):
-        return reverse("core:remove_from_cart", kwargs={
+        return reverse("core:remove-from-cart", kwargs={
             'slug': self.slug
         })
-
-
-def pre_save_item_slug(sender, instance, *args, **kwargs):
-    if not instance.slug:
-        instance.slug = slugify(instance.title)
-
-
-pre_save.connect(pre_save_item_slug, sender=Item)
 
 
 class OrderItem(models.Model):
@@ -119,6 +118,17 @@ class Order(models.Model):
     received = models.BooleanField(default=False)
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)
+
+    '''
+    1. Item added to cart
+    2. Adding a billing address
+    (Failed checkout)
+    3. Payment
+    (Preprocessing, processing, packaging etc.)
+    4. Being delivered
+    5. Received
+    6. Refunds
+    '''
 
     def __str__(self):
         return self.user.username
@@ -180,7 +190,7 @@ class Refund(models.Model):
 
 def userprofile_receiver(sender, instance, created, *args, **kwargs):
     if created:
-        UserProfile.objects.create(user=instance)
+        userprofile = UserProfile.objects.create(user=instance)
 
 
 post_save.connect(userprofile_receiver, sender=settings.AUTH_USER_MODEL)
