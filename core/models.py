@@ -34,7 +34,7 @@ class Category(models.Model):
     image = models.ImageField(default="default_category.jpg", blank=True, null=True)
 
     def __str__(self):
-        return self.title
+        return str(self.title) if self.title else "Unnamed Category"
 
     def get_absolute_url(self):
         return reverse("core:product", kwargs={'slug': self.slug})

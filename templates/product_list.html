@@ -4,37 +4,51 @@
 {% block title %}{{ category_title|default:"Products" }}{% endblock %}
 
 {% block content %}
-<h1>{{ category_title|default:"Products" }}</h1>
-
-<!-- Product List -->
-{% if items %}
-    <div class="product-list">
-        {% for item in items %}
-            <div class="product-item card mb-3">
-                {% if item.image %}
-                    <a href="{{ item.get_absolute_url }}">
-                        <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}">
-                    </a>
-                {% endif %}
-                <div class="card-body">
-                    <h3 class="card-title">{{ item.name }}</h3>
-                    <p class="card-text">{{ item.description }}</p>
-                    <p class="card-text">Category: {{ item.category.title|capfirst }}</p>
-                    <p class="card-text">
-                        Price: ${{ item.price }}
-                        {% if item.discount_price %}
-                            <span class="text-danger">Discounted Price: ${{ item.discount_price }}</span>
-                        {% endif %}
-                    </p>
-                    <div class="d-flex justify-content-between">
-                        <a href="{{ item.get_absolute_url }}" class="btn btn-primary">View Details</a>
-                        <a href="{{ item.get_add_to_cart_url }}" class="btn btn-success">Add to Cart</a>
-                    </div>
+<!-- Products -->
+<section class="mb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 mb-4">
+        <h3 class="text-center">{{ category_title|default:"Our Products" }}</h3>
+      </div>
+    </div>
+    <div class="row">
+      {% for item in items %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+              <div class="card h-100">
+                <div class="view overlay" style="height: 150px; overflow: hidden;">
+                  {% if item.image %}
+                  <img src="{{ item.image.url }}" class="card-img-top" style="height: 100%; width: 100%; object-fit: contain;" loading="lazy" alt="{{ item.name }}">
+                  {% else %}
+                  <img src="{% static 'images/default-product.jpg' %}" class="card-img-top" style="height: 100%; width: 100%; object-fit: contain;" loading="lazy" alt="Default product image">
+                  {% endif %}
+                  <a href="{{ item.get_absolute_url }}">
+                    <div class="mask rgba-white-slight"></div>
+                  </a>
                 </div>
+
+                <div class="card-body p-2 text-center">
+                  <h6 class="card-title mb-2">
+                    <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.name }}</a>
+                  </h6>
+                  <p class="card-text mb-2">
+                    <small class="text-muted">{{ item.category.title|capfirst }}</small>
+                  </p>
+                  <h6 class="font-weight-bold blue-text mb-2">
+                    ${{ item.discount_price|default:item.price }}
+                  </h6>
+                  <div class="d-flex justify-content-center gap-2">
+                    <a href="{{ item.get_absolute_url }}" class="btn btn-primary btn-sm">Details</a>
+                    <a href="{{ item.get_add_to_cart_url }}" class="btn btn-success btn-sm">Add to Cart</a>
+                  </div>
+                </div>
+              </div>
             </div>
         {% endfor %}
     </div>
-{% else %}
-    <p>No products available in this category.</p>
-{% endif %}
+  </section>
+  
+  {% if not items %}
+    <p class="text-center">No products available in this category.</p>
+  {% endif %}
 {% endblock %}
