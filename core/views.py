@@ -11,25 +11,27 @@ from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
-
+from django.shortcuts import render
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
-from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile
+from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile, Product
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-def phones_view(request):
-    phones = Item.objects.filter(category='p')  # Example filtering for 'phones'
-    return render(request, 'phones.html', {'phones': phones})
 
-def cases_view(request):
-    cases = Item.objects.filter(category='c')  # Example filtering for 'cases'
-    return render(request, 'cases.html', {'cases': cases})
-
-def replacement_parts_view(request):
-    replacement_parts = Item.objects.filter(category='rp')  # Example filtering for 'replacement parts'
-    return render(request, 'replacement_parts.html', {'replacement_parts': replacement_parts})
-def create_ref_code():
-    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
+def product_list(request):
+    category = request.GET.get('category')  # Get the category from the query parameters
+    
+    if category:
+        # Filter products by the selected category
+        products = Product.objects.filter(category=category)
+    else:
+        # If no category is selected, show all products
+        products = Product.objects.all()
+    
+    # Get all unique categories for the filter dropdown
+    categories = Product.objects.values_list('category', flat=True).distinct()
+    
+    return render(request, 'product_list.html', {'products': products, 'categories': categories})
 
 
 def products(request):
@@ -215,8 +217,10 @@ class CheckoutView(View):
             messages.warning(self.request, "You do not have an active order")
             return redirect("core:order-summary")
 
-
 class PaymentView(View):
+
+    def create_ref_code(self):
+        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
     def get(self, *args, **kwargs):
         order = Order.objects.get(user=self.request.user, ordered=False)
         if order.billing_address:
@@ -298,13 +302,13 @@ class PaymentView(View):
                 # assign the payment to the order
 
                 order_items = order.items.all()
-                order_items.update(ordered=True)
+                order.ref_code = self.create_ref_code()
                 for item in order_items:
                     item.save()
 
                 order.ordered = True
                 order.payment = payment
-                order.ref_code = create_ref_code()
+                order.ref_code = self.create_ref_code()
                 order.save()
 
                 messages.success(self.request, "Your order was successful!")

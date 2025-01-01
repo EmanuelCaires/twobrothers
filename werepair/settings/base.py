@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap4',
     'django_countries',
+    'debug_toolbar', 
     'core'
 ]
 

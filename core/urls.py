@@ -31,12 +31,14 @@ urlpatterns = [
          name='remove-single-item-from-cart'),
     path('payment/<payment_option>/', PaymentView.as_view(), name='payment'),
     path('request-refund/', RequestRefundView.as_view(), name='request-refund'),
-    path('phones/', views.phones_view, name='phones'),
-    path('cases/', views.cases_view, name='cases'),
-    path('replacement-parts/', views.replacement_parts_view, name='replacement_parts'),
-    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
-     path('debug/', include('debug_toolbar.urls', namespace='debug_toolbar')),
-     path('admin/', admin.site.urls),
+    path('products/', views.product_list, name='product_list'),
+    path('', views.product_list, name='product_list'),
+    path('category/<slug:category_slug>/', views.product_list, name='product_list_by_category'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [
+    path('debug/', include('debug_toolbar.urls', namespace='debug_toolbar')),
+    path('admin/', admin.site.urls),
 ]
 
 
