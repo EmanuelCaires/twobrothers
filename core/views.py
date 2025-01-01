@@ -13,32 +13,54 @@ from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
 from django.shortcuts import render
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
-from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile, Product
+from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile, Category
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-
-def product_list(request):
-    category = request.GET.get('category')  # Get the category from the query parameters
-    
-    if category:
-        # Filter products by the selected category
-        products = Product.objects.filter(category=category)
-    else:
-        # If no category is selected, show all products
-        products = Product.objects.all()
-    
-    # Get all unique categories for the filter dropdown
-    categories = Product.objects.values_list('category', flat=True).distinct()
-    
-    return render(request, 'product_list.html', {'products': products, 'categories': categories})
+def create_ref_code():
+    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
 
 
-def products(request):
+
+def phones(request):
+    items = Item.objects.filter(
+        category__category='P'
+    ).order_by('name')
+    categories = Category.objects.all()
+    
     context = {
-        'items': Item.objects.all()
+        'items': items,
+        'categories': categories,
+        'category_title': 'Phones'
     }
-    return render(request, "products.html", context)
+    return render(request, 'product_list.html', context)
+
+def cases(request):
+    items = Item.objects.filter(
+        category__category='C'
+    ).order_by('name')
+    categories = Category.objects.all()
+    
+    context = {
+        'items': items,
+        'categories': categories,
+        'category_title': 'Cases'
+    }
+    return render(request, 'product_list.html', context)
+
+def replacement_parts(request):
+    items = Item.objects.filter(
+        category__category='RP'
+    ).order_by('name')
+    categories = Category.objects.all()
+    
+    context = {
+        'items': items,
+        'categories': categories,
+        'category_title': 'Replacement Parts'
+    }
+    return render(request, 'product_list.html', context)
+
 
 
 def is_valid_form(values):
@@ -47,6 +69,15 @@ def is_valid_form(values):
         if field == '':
             valid = False
     return valid
+
+
+
+class ProductListView(ListView):
+    model = Item
+    template_name = "product_list.html"
+    context_object_name = "items"
+    paginate_by = 10
+    ordering = ['name']
 
 
 class CheckoutView(View):
@@ -363,6 +394,7 @@ class HomeView(ListView):
     model = Item
     paginate_by = 10
     template_name = "home.html"
+    ordering = ['name']
 
 
 class OrderSummaryView(LoginRequiredMixin, View):
@@ -378,7 +410,7 @@ class OrderSummaryView(LoginRequiredMixin, View):
             return redirect("/")
 
 
-class ItemDetailView(DetailView):
+class ProductDetailView(DetailView):
     model = Item
     template_name = "product.html"
 
@@ -399,18 +431,18 @@ def add_to_cart(request, slug):
             order_item.quantity += 1
             order_item.save()
             messages.info(request, "This item quantity was updated.")
-            return redirect("core:order-summary")
         else:
             order.items.add(order_item)
             messages.info(request, "This item was added to your cart.")
-            return redirect("core:order-summary")
     else:
         ordered_date = timezone.now()
         order = Order.objects.create(
             user=request.user, ordered_date=ordered_date)
         order.items.add(order_item)
         messages.info(request, "This item was added to your cart.")
-        return redirect("core:order-summary")
+    
+    # Redirect back to the previous page
+    return redirect(request.META.get('HTTP_REFERER', 'core:home'))
 
 
 @login_required

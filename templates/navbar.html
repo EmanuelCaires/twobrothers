@@ -19,15 +19,24 @@
 
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
-          {% comment %} <li class="nav-item active">
+          <li class="nav-item {% if request.path == '/' %}active{% endif %}">
             <a class="nav-link waves-effect" href="/">Home
-              <span class="sr-only">(current)</span>
+              {% if request.path == '/' %}<span class="sr-only">(current)</span>{% endif %}
             </a>
           </li>
+          <li class="nav-item {% if request.path == '/phones/' %}active{% endif %}">
+            <a class="nav-link waves-effect" href="{% url 'core:phones' %}">Phones</a>
+          </li>
+          <li class="nav-item {% if request.path == '/cases/' %}active{% endif %}">
+            <a class="nav-link waves-effect" href="{% url 'core:cases' %}">Cases</a>
+          </li>
+          <li class="nav-item {% if request.path == '/replacement-parts/' %}active{% endif %}">
+            <a class="nav-link waves-effect" href="{% url 'core:replacement-parts' %}">Parts</a>
+          </li>
           <li class="nav-item">
-            <a class="nav-link waves-effect" href="/checkout">
+            <a class="nav-link waves-effect" href="{% url 'core:checkout' %}">
             Checkout</a>
-          </li> {% endcomment %}
+          </li>
         </ul>
 
         <!-- Right -->

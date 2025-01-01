@@ -5,7 +5,7 @@ from django.contrib import admin
 import debug_toolbar
 from . import views
 from .views import (
-    ItemDetailView,
+    ProductDetailView,
     CheckoutView,
     HomeView,
     OrderSummaryView,
@@ -14,7 +14,9 @@ from .views import (
     remove_single_item_from_cart,
     PaymentView,
     AddCouponView,
-    RequestRefundView
+    RequestRefundView,
+    ProductListView
+
 )
 
 app_name = 'core'
@@ -23,7 +25,7 @@ urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('checkout/', CheckoutView.as_view(), name='checkout'),
     path('order-summary/', OrderSummaryView.as_view(), name='order-summary'),
-    path('product/<slug>/', ItemDetailView.as_view(), name='product'),
+    path('product/<slug>/', ProductDetailView.as_view(), name='product'),
     path('add-to-cart/<slug>/', add_to_cart, name='add-to-cart'),
     path('add-coupon/', AddCouponView.as_view(), name='add-coupon'),
     path('remove-from-cart/<slug>/', remove_from_cart, name='remove-from-cart'),
@@ -31,9 +33,9 @@ urlpatterns = [
          name='remove-single-item-from-cart'),
     path('payment/<payment_option>/', PaymentView.as_view(), name='payment'),
     path('request-refund/', RequestRefundView.as_view(), name='request-refund'),
-    path('products/', views.product_list, name='product_list'),
-    path('', views.product_list, name='product_list'),
-    path('category/<slug:category_slug>/', views.product_list, name='product_list_by_category'),
+    path('phones/', views.phones, name='phones'),
+    path('cases/', views.cases, name='cases'),
+    path('replacement-parts/', views.replacement_parts, name='replacement-parts'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [
