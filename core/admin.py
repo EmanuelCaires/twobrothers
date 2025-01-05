@@ -74,8 +74,8 @@ class ItemAdmin(admin.ModelAdmin):
         return form
     
     def save_model(self, request, obj, form, change):
-        if not obj.category_id:
-            obj.category_id = None
+        if not obj.category:
+            obj.category = None
         super().save_model(request, obj, form, change)
 
 # Register models with custom admin configurations

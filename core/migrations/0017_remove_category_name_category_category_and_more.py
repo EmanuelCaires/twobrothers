@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='category',
             name='category',
-            field=models.CharField(choices=[('P', 'Phones'), ('C', 'Cases'), ('RP', 'Replacement Parts')], default=django.utils.timezone.now, max_length=1),
+            field=models.CharField(choices=[('P', 'Phones'), ('C', 'Cases'), ('RP', 'Replacement Parts')], default='P', max_length=100),
             preserve_default=False,
         ),
         migrations.AddField(
@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='category',
             name='label',
-            field=models.CharField(choices=[('P', 'primary'), ('S', 'secondary'), ('D', 'danger')], default=django.utils.timezone.now, max_length=10),
+            field=models.CharField(choices=[('P', 'primary'), ('S', 'secondary'), ('D', 'danger')], default='P', max_length=50),
             preserve_default=False,
         ),
         migrations.AddField(

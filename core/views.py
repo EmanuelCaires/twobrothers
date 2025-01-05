@@ -262,17 +262,15 @@ class PaymentView(View):
             }
             userprofile = self.request.user.userprofile
             if userprofile.one_click_purchasing:
-                # fetch the users card list
-                cards = stripe.Customer.list_sources(
-                    userprofile.stripe_customer_id,
-                    limit=3,
-                    object='card'
+                # fetch the users payment methods
+                payment_methods = stripe.PaymentMethod.list(
+                    customer=userprofile.stripe_customer_id,
+                    type="card"
                 )
-                card_list = cards['data']
-                if len(card_list) > 0:
-                    # update the context with the default card
+                if len(payment_methods.data) > 0:
+                    # update the context with the default payment method
                     context.update({
-                        'card': card_list[0]
+                        'card': payment_methods.data[0].card
                     })
             return render(self.request, "payment.html", context)
         else:
@@ -291,15 +289,27 @@ class PaymentView(View):
 
             if save:
                 if userprofile.stripe_customer_id != '' and userprofile.stripe_customer_id is not None:
-                    customer = stripe.Customer.retrieve(
-                        userprofile.stripe_customer_id)
-                    customer.sources.create(source=token)
-
+                    # Attach payment method to existing customer
+                    payment_method = stripe.PaymentMethod.attach(
+                        token,
+                        customer=userprofile.stripe_customer_id,
+                    )
+                    # Set as default payment method
+                    stripe.Customer.modify(
+                        userprofile.stripe_customer_id,
+                        invoice_settings={
+                            'default_payment_method': payment_method.id
+                        }
+                    )
                 else:
+                    # Create new customer with payment method
                     customer = stripe.Customer.create(
                         email=self.request.user.email,
+                        payment_method=token,
+                        invoice_settings={
+                            'default_payment_method': token
+                        }
                     )
-                    customer.sources.create(source=token)
                     userprofile.stripe_customer_id = customer['id']
                     userprofile.one_click_purchasing = True
                     userprofile.save()
@@ -309,23 +319,27 @@ class PaymentView(View):
             try:
 
                 if use_default or save:
-                    # charge the customer because we cannot charge the token more than once
-                    charge = stripe.Charge.create(
-                        amount=amount,  # cents
+                    # Create payment intent using customer's default payment method
+                    payment_intent = stripe.PaymentIntent.create(
+                        amount=amount,
                         currency="usd",
-                        customer=userprofile.stripe_customer_id
+                        customer=userprofile.stripe_customer_id,
+                        confirm=True,
+                        off_session=True,
+                        payment_method=token if not use_default else None
                     )
                 else:
-                    # charge once off on the token
-                    charge = stripe.Charge.create(
-                        amount=amount,  # cents
+                    # Create payment intent with token directly
+                    payment_intent = stripe.PaymentIntent.create(
+                        amount=amount,
                         currency="usd",
-                        source=token
+                        payment_method=token,
+                        confirm=True
                     )
 
                 # create the payment
                 payment = Payment()
-                payment.stripe_charge_id = charge['id']
+                payment.stripe_charge_id = payment_intent['id']
                 payment.user = self.request.user
                 payment.amount = order.get_total()
                 payment.save()
