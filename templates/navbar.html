@@ -34,10 +34,7 @@
             <a class="nav-link waves-effect" href="{% url 'core:replacement-parts' %}">Parts</a>
           </li>
           {% if request.user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'core:checkout' %}">
-            Checkout</a>
-          </li>
+          <!-- Removed Checkout tab -->
           {% endif %}
         </ul>
 

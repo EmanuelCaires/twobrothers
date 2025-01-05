@@ -60,8 +60,26 @@ class AddressAdmin(admin.ModelAdmin):
     search_fields = ['user__username', 'street_address', 'apartment_address', 'zip']
 
 
+class ItemAdmin(admin.ModelAdmin):
+    list_display = ['name', 'price', 'category', 'slug']
+    list_filter = ['category']
+    search_fields = ['name', 'description']
+    prepopulated_fields = {'slug': ('name',)}
+    fields = ['name', 'description', 'price', 'discount_price', 'image', 'category', 'slug']
+    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields['category'].required = False
+        form.base_fields['category'].empty_label = "No category"
+        return form
+    
+    def save_model(self, request, obj, form, change):
+        if not obj.category_id:
+            obj.category_id = None
+        super().save_model(request, obj, form, change)
+
 # Register models with custom admin configurations
-admin.site.register(Item)
+admin.site.register(Item, ItemAdmin)
 admin.site.register(OrderItem)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Payment)
