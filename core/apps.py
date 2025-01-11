@@ -7,10 +7,10 @@ class CoreConfig(AppConfig):
     name = 'core'
 
     def ready(self):
-        from .models import UserProfile  # Moved import here
         User = get_user_model()
         post_save.connect(self.create_user_profile, sender=User)
 
     def create_user_profile(self, sender, instance, created, **kwargs):
+        from .models import UserProfile  # Moved import back here
         if created:
             UserProfile.objects.create(user=instance)
