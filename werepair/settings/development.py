@@ -2,7 +2,12 @@ from .base import *
 import dj_database_url
 
 DEBUG = True
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=lambda v: [s.strip() for s in v.split(',')])
+ALLOWED_HOSTS = config(
+    'ALLOWED_HOSTS',
+    default='127.0.0.1,localhost,werepairio-production.up.railway.app',
+    cast=lambda v: [s.strip() for s in v.split(',')]
+)
+
 
 
 
