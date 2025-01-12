@@ -1,4 +1,3 @@
-# werepair.io
 
 **werepair.io** is a modern, responsive e-commerce platform specializing in mobile phones, cases, and replacement parts. With user-centric design and robust functionality, this platform delivers a seamless shopping experience.
 
