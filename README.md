@@ -1,4 +1,4 @@
-# WEPREP.IO
+# WEREPAIR.IO
 
 ## Description
 WEREPAIR.IO is an online platform offering phones, phone cases, and replacement parts. Users can browse through categorized product listings, add items to their cart, and make secure payments.
