@@ -70,6 +70,7 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = [BASE_DIR / 'static_in_env']  # Using pathlib Path object to join paths
 STATIC_ROOT = BASE_DIR / 'static_root'
 MEDIA_ROOT = BASE_DIR / 'media_root'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Auth
 AUTHENTICATION_BACKENDS = (
