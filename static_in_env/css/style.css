@@ -21,3 +21,9 @@ body,
 /* Footer color for sake of consistency with Navbar */
 .page-footer {
   background-color: #929FBA; }
+
+  .product-image {
+    max-width: 100%;
+    max-height: 400px; /* Adjust the max-height as needed */
+    object-fit: contain;
+}

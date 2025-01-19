@@ -11,11 +11,11 @@
 
             {% if object.image %}
                 <a href="{{ object.get_absolute_url }}">
-                    <img src="{{ object.image.url }}" class="img-fluid" alt="{{ object.name }}">
+                    <img src="{{ object.image.url }}" class="img-fluid product-image" alt="{{ object.name }}">
                 </a>
             {% else %}
                 <a href="{{ object.get_absolute_url }}">
-                    <img src="{% static 'images/default-placeholder.png' %}" class="img-fluid" alt="Placeholder">
+                    <img src="{% static 'images/default-placeholder.png' %}" class="img-fluid product-image" alt="Placeholder">
                 </a>
             {% endif %}
 
@@ -72,7 +72,7 @@
         <!--Grid column-->
         <div class="col-md-6 text-center">
 
-            <h4 class="my-4 h4">Additional information</h4>
+            <h4 class="my-4 h4">Featured Products</h4>
 
             <p>{{ object.additional_info }}</p>
 
