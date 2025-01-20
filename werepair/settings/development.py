@@ -11,7 +11,7 @@ ALLOWED_HOSTS = config(
 
 # PostgreSQL Database Configuration
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL', default='postgresql://werepair_io_user:aFrB95herlY1tsJeIdl7McmBXoyxblwu@dpg-ctjus82j1k6c73cln0ug-a.frankfurt-postgres.render.com/werepair_io'))
+    'default': dj_database_url.config(default=config('DATABASE_URL'))
 }
 
 # Stripe Configuration

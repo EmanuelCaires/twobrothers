@@ -3,7 +3,7 @@ from .base import *
 DEBUG = config('DEBUG', cast=bool)
 ALLOWED_HOSTS = ['ip-address', 'www.your-website.com']
 ALLOWED_HOSTS = ['your-netlify-site-name.netlify.app', 'www.yourdomain.com']
-ALLOWED_HOSTS = ['your-render-app-name.onrender.com']
+ALLOWED_HOSTS = ['https://werepair-io.onrender.com/']
 
 
 
