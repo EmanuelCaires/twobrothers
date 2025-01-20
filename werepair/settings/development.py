@@ -1,5 +1,5 @@
 from .base import *
-import dj_database_url
+from dj_database_url import parse as db_url
 
 DEBUG = True
 
@@ -11,7 +11,7 @@ ALLOWED_HOSTS = config(
 
 # PostgreSQL Database Configuration
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL'))
+    'default': db_url(os.getenv('DATABASE_URL'))
 }
 
 # Stripe Configuration
