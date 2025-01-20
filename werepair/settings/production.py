@@ -28,7 +28,7 @@ LOGGING = {
     },
 }
 
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = True  # Temporarily set to True for testing
 ALLOWED_HOSTS = ['werepair-io.onrender.com', '127.0.0.1']
 
 AUTH_PASSWORD_VALIDATORS = [
