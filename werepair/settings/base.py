@@ -1,13 +1,11 @@
 from pathlib import Path
-from decouple import config  # Add this import
+from decouple import config
 import os
 
-# Convert BASE_DIR to a Path object using pathlib
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = config('SECRET_KEY', default='your_default_secret_key_here')
 
-# Set the default auto field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 INSTALLED_APPS = [
@@ -32,8 +30,8 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware', 
-    'allauth.account.middleware.AccountMiddleware', 
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -43,7 +41,7 @@ ROOT_URLCONF = 'werepair.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"],  # Using pathlib Path object to join paths
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -59,26 +57,58 @@ TEMPLATES = [
 WSGI_APPLICATION = 'werepair.wsgi.application'
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'UTC'  # Update if necessary
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-STATICFILES_DIRS = [BASE_DIR / 'static_in_env']  # Using pathlib Path object to join paths
-STATIC_ROOT = BASE_DIR / 'static_root'
-MEDIA_ROOT = BASE_DIR / 'media_root'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Auth
+STATICFILES_DIRS = [BASE_DIR / 'static_in_env']
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Consolidated definition
+MEDIA_ROOT = BASE_DIR / 'media_root'
+
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend'
 )
+
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 
-# CRISPY FORMS
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
