@@ -1,5 +1,29 @@
 from .base import *
 
+# Logging configuration
+import os
+import logging
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'django_debug.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+
 DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = ['https://werepair-io.onrender.com/']
 
