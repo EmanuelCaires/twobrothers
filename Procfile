@@ -1,2 +1,2 @@
-web: gunicorn werepair.io.wsgi:
+web: gunicorn werepair.wsgi:
 
