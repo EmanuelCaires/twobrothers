@@ -23,11 +23,8 @@ LOGGING = {
     },
 }
 
-
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ['https://werepair-io.onrender.com/']
-
-
+ALLOWED_HOSTS = ['https://werepair-io.onrender.com/', '127.0.0.1']
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -46,8 +43,6 @@ DATABASES = {
         'PORT': '5432',  # Default port
     }
 }
-
-
 
 STRIPE_PUBLIC_KEY = config('STRIPE_LIVE_PUBLIC_KEY', default='')
 STRIPE_SECRET_KEY = config('STRIPE_LIVE_SECRET_KEY', default='')
