@@ -4,6 +4,11 @@ from .base import *
 import os
 import logging
 
+# Ensure the logs directory exists
+LOGS_DIR = os.path.join(BASE_DIR, 'logs')
+if not os.path.exists(LOGS_DIR):
+    os.makedirs(LOGS_DIR)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -11,7 +16,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'django_debug.log'),
+            'filename': os.path.join(LOGS_DIR, 'django_debug.log'),
         },
     },
     'loggers': {
