@@ -29,7 +29,7 @@ LOGGING = {
 }
 
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ['https://werepair-io.onrender.com/', '127.0.0.1']
+ALLOWED_HOSTS = ['werepair-io.onrender.com', '127.0.0.1']
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
