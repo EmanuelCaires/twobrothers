@@ -19,11 +19,12 @@ DATABASES = {
         'NAME': 'werepair_io',
         'USER': 'werepair_io_user',
         'PASSWORD': 'aFrB95herlY1tsJeIdl7McmBXoyxblwu',
-        'HOST': 'postgresql://werepair_io_user:aFrB95herlY1tsJeIdl7McmBXoyxblwu@dpg-ctjus82j1k6c73cln0ug-a.frankfurt-postgres.render.com/werepair_io',
-        'PORT': '5432',
+        'HOST': 'dpg-ctjus82j1k6c73cln0ug-a.frankfurt-postgres.render.com',  # Just the host here
+        'PORT': '5432',  # Default port
     }
-
 }
+
+
 
 STRIPE_PUBLIC_KEY = config('STRIPE_LIVE_PUBLIC_KEY', default='')
 STRIPE_SECRET_KEY = config('STRIPE_LIVE_SECRET_KEY', default='')
