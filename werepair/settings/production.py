@@ -1,8 +1,7 @@
 from .base import *
 
-DEBUG = config('DEBUG', cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = ['ip-address', 'www.your-website.com']
-ALLOWED_HOSTS = ['your-netlify-site-name.netlify.app', 'www.yourdomain.com']
 ALLOWED_HOSTS = ['https://werepair-io.onrender.com/']
 
 
@@ -26,5 +25,5 @@ DATABASES = {
 
 }
 
-STRIPE_PUBLIC_KEY = config('STRIPE_LIVE_PUBLIC_KEY')
-STRIPE_SECRET_KEY = config('STRIPE_LIVE_SECRET_KEY')
+STRIPE_PUBLIC_KEY = config('STRIPE_LIVE_PUBLIC_KEY', default='')
+STRIPE_SECRET_KEY = config('STRIPE_LIVE_SECRET_KEY', default='')
