@@ -1,7 +1,6 @@
 from .base import *
 
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ['ip-address', 'www.your-website.com']
 ALLOWED_HOSTS = ['https://werepair-io.onrender.com/']
 
 
