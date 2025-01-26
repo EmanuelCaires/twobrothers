@@ -14,41 +14,43 @@
     </div>
     <div class="row">
       {% for item in items %}
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-              <div class="card h-100">
-                <div class="view overlay" style="height: 150px; overflow: hidden;">
-                  {% if item.image %}
-                  <img src="{{ item.image.url }}" class="card-img-top" style="height: 100%; width: 100%; object-fit: contain;" loading="lazy" alt="{{ item.name }}">
-                  {% else %}
-                  <img src="{% static 'images/default-product.jpg' %}" class="card-img-top" style="height: 100%; width: 100%; object-fit: contain;" loading="lazy" alt="Default product image">
-                  {% endif %}
-                  <a href="{{ item.get_absolute_url }}">
-                    <div class="mask rgba-white-slight"></div>
-                  </a>
-                </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card h-100">
+          <div class="view overlay" style="height: 150px; overflow: hidden;">
+            {% if item.image %}
+            <img src="{{ item.image.url }}" class="card-img-top" style="height: 100%; width: 100%; object-fit: contain;"
+              loading="lazy" alt="{{ item.name }}">
+            {% else %}
+            <img src="{% static 'images/default-product.webp' %}" class="card-img-top"
+              style="height: 100%; width: 100%; object-fit: contain;" loading="lazy" alt="Default product image">
+            {% endif %}
+            <a href="{{ item.get_absolute_url }}">
+              <div class="mask rgba-white-slight"></div>
+            </a>
+          </div>
 
-                <div class="card-body p-2 text-center">
-                  <h6 class="card-title mb-2">
-                    <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.name }}</a>
-                  </h6>
-                  <p class="card-text mb-2">
-                    <small class="text-muted">{{ item.category.title|capfirst }}</small>
-                  </p>
-                  <h6 class="font-weight-bold blue-text mb-2">
-                    ${{ item.discount_price|default:item.price }}
-                  </h6>
-                  <div class="d-flex justify-content-center gap-2">
-                    <a href="{{ item.get_absolute_url }}" class="btn btn-primary btn-sm">Details</a>
-                    <a href="{{ item.get_add_to_cart_url }}" class="btn btn-success btn-sm">Add to Cart</a>
-                  </div>
-                </div>
-              </div>
+          <div class="card-body p-2 text-center">
+            <h6 class="card-title mb-2">
+              <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.name }}</a>
+            </h6>
+            <p class="card-text mb-2">
+              <small class="text-muted">{{ item.category.title|capfirst }}</small>
+            </p>
+            <h6 class="font-weight-bold blue-text mb-2">
+              ${{ item.discount_price|default:item.price }}
+            </h6>
+            <div class="d-flex justify-content-center gap-2">
+              <a href="{{ item.get_absolute_url }}" class="btn btn-primary btn-sm">Details</a>
+              <a href="{{ item.get_add_to_cart_url }}" class="btn btn-success btn-sm">Add to Cart</a>
             </div>
-        {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
     </div>
-  </section>
-  
-  {% if not items %}
-    <p class="text-center">No products available in this category.</p>
-  {% endif %}
+</section>
+
+{% if not items %}
+<p class="text-center">No products available in this category.</p>
+{% endif %}
 {% endblock %}
