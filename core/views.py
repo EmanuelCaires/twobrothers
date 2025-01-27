@@ -12,7 +12,6 @@ from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
-from django.shortcuts import render
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
 from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile, Category
 
@@ -119,6 +118,7 @@ class CheckoutView(View):
                 logger.info("Checkout form is valid.")
                 # Process the form data...
                 # (existing logic)
+                return redirect("core:payment", payment_option="stripe")  # Redirect to the payment page with a default option
             else:
                 logger.warning("Checkout form is invalid: %s", form.errors)
                 messages.warning(self.request, "Invalid data received")
@@ -129,15 +129,17 @@ class CheckoutView(View):
 
 class PaymentView(View):
     def get(self, *args, **kwargs):
-        # (existing logic)
-        pass
+        # Render the payment page
+        return render(self.request, "payment.html")
 
     def post(self, *args, **kwargs):
         form = PaymentForm(self.request.POST)
         if form.is_valid():
             logger.info("Payment form is valid.")
             # Process the payment...
-            # (existing logic)
+            # (Add your payment processing logic here)
+            messages.success(self.request, "Payment was successful!")
+            return redirect("core:order-summary")  # Redirect to order summary after payment
         else:
             logger.warning("Payment form is invalid: %s", form.errors)
             messages.warning(self.request, "Invalid data received")
@@ -170,8 +172,16 @@ class HomeView(ListView):
 
 class OrderSummaryView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
-        # (existing logic)
-        pass
+        order_qs = Order.objects.filter(user=self.request.user, ordered=False)
+        if order_qs.exists():
+            order = order_qs[0]
+            context = {
+                'order': order
+            }
+            return render(self.request, "order_summary.html", context)
+        else:
+            messages.info(self.request, "You do not have an active order")
+            return redirect("core:checkout")
 
 class ProductDetailView(DetailView):
     model = Item
@@ -179,8 +189,29 @@ class ProductDetailView(DetailView):
 
 @login_required
 def add_to_cart(request, slug):
-    # (existing logic)
-    pass
+    item = get_object_or_404(Item, slug=slug)
+    order_item, created = OrderItem.objects.get_or_create(
+        item=item,
+        ordered=False
+    )
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.items.filter(item__slug=item.slug).exists():
+            order_item.quantity += 1
+            order_item.save()
+            messages.info(request, "This item quantity was updated.")
+        else:
+            order.items.add(order_item)
+            messages.info(request, "This item was added to your cart.")
+    else:
+        ordered_date = timezone.now()
+        order = Order.objects.create(user=request.user, ordered_date=ordered_date)
+        order.items.add(order_item)
+        messages.info(request, "This item was added to your cart.")
+
+    return redirect("core:order-summary")
 
 @login_required
 def remove_from_cart(request, slug):
@@ -189,8 +220,31 @@ def remove_from_cart(request, slug):
 
 @login_required
 def remove_single_item_from_cart(request, slug):
-    # (existing logic)
-    pass
+    item = get_object_or_404(Item, slug=slug)
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.items.filter(item__slug=item.slug).exists():
+            order_item = OrderItem.objects.filter(
+                item=item,
+                ordered=False
+            )[0]
+            if order_item.quantity > 1:
+                order_item.quantity -= 1
+                order_item.save()
+                messages.info(request, "This item quantity was decreased.")
+            else:
+                order.items.remove(order_item)
+                order_item.delete()
+                messages.info(request, "This item was removed from your cart.")
+            return redirect("core:order-summary")
+        else:
+            messages.info(request, "This item was not in your cart.")
+            return redirect("core:order-summary")
+    else:
+        messages.info(request, "You do not have an active order.")
+        return redirect("core:checkout")
 
 def get_coupon(request, code):
     # (existing logic)
