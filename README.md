@@ -11,19 +11,51 @@ WEREPAIR.IO is an online platform offering phones, phone cases, and replacement 
 - Footer with Social Media Links
 
 ## Wireframes
-### Home Page
+### Desktop View
 Wireframe illustrating the main product listing page with categories, product cards, and a footer.
-![Home Wireframe](wireframes/home-wireframe.png)
 
-### Product List Page
-Wireframe showcasing the filter functionality and product categories.
-![Product List Wireframe](wireframes/product-list-wireframe.png)
+![Home Wireframe](wireframes/wireframe_home.jpeg)
+
+### Desktop Cases View
+
+![Cases Wireframe](wireframes/wireframe_Cases.jpeg)
+
+### Desktop Phones View
+
+![Phones Wireframe](wireframes/wireframe_Phones.jpeg)
+
+### Desktop Replacement Parts View
+
+![Replacement Parts Wireframe](wireframes/wireframe_Re_Parts.jpeg)
+
+### Tablet View
+
+### Tablet Cases View
+
+![Cases Tablet Wireframe](wireframes/wireframe_tablet_Cases.jpeg)
+
+### Tablet Phones View
+
+![Phones Tablet Wireframe](wireframes/wireframe_tablet_Phones.jpeg)
+
+### Tablet Replacement Parts View
+
+![Replacement Parts Tablet Wireframe](wireframes/wireframe_tablet_Replacement_Parts.jpeg)
+
+### Tablet Home View
+
+![Home Tablet  Wireframe](wireframes/wireframe_tablet_home.jpeg)
+
+### Mobile View
+
+![Mobile View Wireframe](wireframes/wireframes_mobile_view.jpeg)
+
 
 ## Lighthouse Results
-- **Performance**: 95
-- **Accessibility**: 100
-- **Best Practices**: 100
-- **SEO**: 100
+- **Performance**: 39
+- **Accessibility**: 83
+- **Best Practices**: 96
+
 
 ## Color Palette
 The following colors were used in the website design:
@@ -36,12 +68,14 @@ The following colors were used in the website design:
 | Footer Background      | `#6C757D`    |
 | Link Hover             | `#0056B3`    |
 
-### Color Palette Preview:
-| ![Primary Navbar/Buttons](https://via.placeholder.com/50/007BFF/FFFFFF?text=+) | ![Background](https://via.placeholder.com/50/F8F9FA/000000?text=+) | ![Text](https://via.placeholder.com/50/212529/FFFFFF?text=+) | ![Footer Background](https://via.placeholder.com/50/6C757D/FFFFFF?text=+) | ![Link Hover](https://via.placeholder.com/50/0056B3/FFFFFF?text=+) |
-|-----------------------------------------------|------------------------------|----------------------------|-----------------------------------------------|--------------------------------|
+### Color Palette:
+
+![Colours](wireframes/Pallet_Colours.png)
+
+
 
 ## Deployment
-The project is deployed on Render and can be accessed at: [WEREPAIR.IO](https://werepairio.render.com)
+The project is deployed on Render and can be accessed at: [WEREPAIR.IO](https://werepair-io.onrender.com/)
 
 ## Installation
 1. Clone the repository: `git clone https://github.com/username/werepair-io.git`
@@ -65,13 +99,40 @@ python manage.py test
 
 ## Screenshots
 ### Home Page
-![Home Page Screenshot](screenshots/homepage.png)
+![Home Page Screenshot](wireframes/home_screen_shot.png)
 
-### Product List Page
-![Product List Screenshot](screenshots/product-list.png)
+### Phones List Page
+![Phones List Screenshot](wireframes/Phones_tab.png)
+
+### Cases List Page
+![Cases List Screenshot](wireframes/Cases_tab.png)
+
+
+### Parts List Page
+![Parts List Screenshot](wireframes/Replacement_parts_tab.png)
+
+
+### Sign In Page
+![Sign In Screenshot](wireframes/Sign_in.png)
+
+
+### Sign Up Page
+![Sign Up Screenshot](wireframes/Sign_up.png)
+
+
+### Order Summary Page
+![Order Summary Screenshot](wireframes/Order_sum.png)
+
+
+### Checkout Page
+![Checkout Screenshot](wireframes/checkout_form.png)
+
+
+### Payment Page
+![Payment List Screenshot](wireframes/Payment.png)
 
 ## Author
-This project was designed and implemented by [Your Name].
+This project was designed and implemented by [Emanuel Caires].
 
 ---
 Made with 💙 for tech enthusiasts!
