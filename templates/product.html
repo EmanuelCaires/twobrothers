@@ -11,11 +11,11 @@
 
             {% if object.image %}
                 <a href="{{ object.get_absolute_url }}">
-                    <img src="{{ object.image.url }}" class="img-fluid product-image" alt="{{ object.name }}">
+                    <img src="{{ object.image.url }}" class="img-fluid product-image" alt="{{ object.name }}" loading="lazy" srcset="{{ object.image.url }} 1x, {{ object.image.url }} 2x">
                 </a>
             {% else %}
                 <a href="{{ object.get_absolute_url }}">
-                    <img src="{% static 'images/default-placeholder.png' %}" class="img-fluid product-image" alt="Placeholder">
+                    <img src="{% static 'images/default-placeholder.png' %}" class="img-fluid product-image" alt="Placeholder" loading="lazy">
                 </a>
             {% endif %}
 
@@ -87,25 +87,19 @@
 
         <!--Grid column-->
         <div class="col-lg-4 col-md-12 mb-4">
-
-            <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
-
+            <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="" loading="lazy">
         </div>
         <!--Grid column-->
 
         <!--Grid column-->
         <div class="col-lg-4 col-md-6 mb-4">
-
-            <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="">
-
+            <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="" loading="lazy">
         </div>
         <!--Grid column-->
 
         <!--Grid column-->
         <div class="col-lg-4 col-md-6 mb-4">
-
-            <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="">
-
+            <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="" loading="lazy">
         </div>
         <!--Grid column-->
 
