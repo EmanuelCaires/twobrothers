@@ -1,61 +1,52 @@
 # WEREPAIR.IO
 
 ## Description
-WEREPAIR.IO is an online platform offering phones, phone cases, and replacement parts. Users can browse through categorized product listings, add items to their cart, and make secure payments.
+WEREPAIR.IO is an online platform specializing in selling smartphones, phone cases, and replacement parts. The website provides a seamless shopping experience with categorized product listings, a user-friendly cart system, and secure payment processing. It features a responsive design, ensuring accessibility across desktops, tablets, and mobile devices.
 
 ## Features
-- User Authentication (Login & Signup)
-- Browse Products by Categories
-- Add Products to Cart
-- Responsive Design
-- Footer with Social Media Links
+- **User Authentication**: Secure login and signup functionality.
+- **Browse Products by Categories**: Phones, cases, and replacement parts.
+- **Add Products to Cart**: Easily add and remove products from the cart.
+- **Search and Filtering**: Quick search and advanced filtering options.
+- **Order Summary & Checkout**: Review orders before making a purchase.
+- **Secure Payments**: Integrated payment gateway for seamless transactions.
+- **Mobile-Friendly Design**: Optimized for all screen sizes.
+- **Social Media Integration**: Footer with social media links for easy engagement.
+- **Performance Optimizations**: Ongoing improvements for faster load times.
 
 ## Wireframes
 ### Desktop View
-Wireframe illustrating the main product listing page with categories, product cards, and a footer.
+Illustrating the main product listing page with categories, product cards, and a footer.
 
 ![Home Wireframe](wireframes/wireframe_home.jpeg)
 
 ### Desktop Cases View
-
 ![Cases Wireframe](wireframes/wireframe_Cases.jpeg)
 
 ### Desktop Phones View
-
 ![Phones Wireframe](wireframes/wireframe_Phones.jpeg)
 
 ### Desktop Replacement Parts View
-
 ![Replacement Parts Wireframe](wireframes/wireframe_Re_Parts.jpeg)
 
 ### Tablet View
-
-### Tablet Cases View
-
-![Cases Tablet Wireframe](wireframes/wireframe_tablet_Cases.jpeg)
-
-### Tablet Phones View
-
-![Phones Tablet Wireframe](wireframes/wireframe_tablet_Phones.jpeg)
-
-### Tablet Replacement Parts View
-
-![Replacement Parts Tablet Wireframe](wireframes/wireframe_tablet_Replacement_Parts.jpeg)
-
-### Tablet Home View
-
-![Home Tablet  Wireframe](wireframes/wireframe_tablet_home.jpeg)
+![Home Tablet Wireframe](wireframes/wireframe_tablet_home.jpeg)
 
 ### Mobile View
-
 ![Mobile View Wireframe](wireframes/wireframes_mobile_view.jpeg)
 
+## Lighthouse Performance Report
+Lighthouse results indicate areas of improvement for performance and accessibility:
+- **Performance**: 39 (Needs optimization in image loading, caching, and script handling.)
+- **Accessibility**: 83 (Good, but enhancements can be made for better readability and contrast.)
+- **Best Practices**: 96 (Well-structured but minor improvements possible.)
+- **SEO**: 91 (SEO-friendly but can improve metadata and structured data.)
 
-## Lighthouse Results
-- **Performance**: 39
-- **Accessibility**: 83
-- **Best Practices**: 96
-
+### Performance Improvements in Progress:
+- **Image Optimization**: Implementing lazy loading and compression.
+- **Code Splitting**: Reducing unnecessary scripts and improving load times.
+- **Caching Strategies**: Enhancing browser caching for faster page loads.
+- **Database Queries Optimization**: Reducing redundant queries for better efficiency.
 
 ## Color Palette
 The following colors were used in the website design:
@@ -68,11 +59,7 @@ The following colors were used in the website design:
 | Footer Background      | `#6C757D`    |
 | Link Hover             | `#0056B3`    |
 
-### Color Palette:
-
 ![Colours](wireframes/Pallet_Colours.png)
-
-
 
 ## Deployment
 The project is deployed on Render and can be accessed at: [WEREPAIR.IO](https://werepair-io.onrender.com/)
@@ -107,32 +94,28 @@ python manage.py test
 ### Cases List Page
 ![Cases List Screenshot](wireframes/Cases_tab.png)
 
-
 ### Parts List Page
 ![Parts List Screenshot](wireframes/Replacement_parts_tab.png)
-
 
 ### Sign In Page
 ![Sign In Screenshot](wireframes/Sign_in.png)
 
-
 ### Sign Up Page
 ![Sign Up Screenshot](wireframes/Sign_up.png)
-
 
 ### Order Summary Page
 ![Order Summary Screenshot](wireframes/Order_sum.png)
 
-
 ### Checkout Page
 ![Checkout Screenshot](wireframes/checkout_form.png)
-
 
 ### Payment Page
 ![Payment List Screenshot](wireframes/Payment.png)
 
 ## Author
-This project was designed and implemented by [Emanuel Caires].
+This project was designed and implemented by Emanuel Caires.
 
 ---
 Made with 💙 for tech enthusiasts!
+
+
