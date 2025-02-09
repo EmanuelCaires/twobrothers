@@ -40,13 +40,20 @@ Lighthouse results indicate areas of improvement for performance and accessibili
 - **Performance**: 39 (Needs optimization in image loading, caching, and script handling.)
 - **Accessibility**: 83 (Good, but enhancements can be made for better readability and contrast.)
 - **Best Practices**: 96 (Well-structured but minor improvements possible.)
-- **SEO**: 91 (SEO-friendly but can improve metadata and structured data.)
+
 
 ### Performance Improvements in Progress:
 - **Image Optimization**: Implementing lazy loading and compression.
 - **Code Splitting**: Reducing unnecessary scripts and improving load times.
 - **Caching Strategies**: Enhancing browser caching for faster page loads.
 - **Database Queries Optimization**: Reducing redundant queries for better efficiency.
+
+
+## Database Schema
+The following diagram illustrates the database schema for WEREPAIR.IO:
+
+![Database Schema](wireframes/database_schema.png)
+
 
 ## Color Palette
 The following colors were used in the website design:
