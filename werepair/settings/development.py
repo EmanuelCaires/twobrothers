@@ -14,8 +14,8 @@ DATABASES = {
 }
 
 # Stripe Configuration
-STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC_KEY', default='your_test_public_key')
-STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET_KEY', default='your_test_secret_key')
+STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC_KEY')
+STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET_KEY')
 STRIPE_API_VERSION = '2022-11-15'
 
 # Email Configuration

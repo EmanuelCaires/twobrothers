@@ -129,8 +129,14 @@ class CheckoutView(View):
 
 class PaymentView(View):
     def get(self, *args, **kwargs):
-        # Render the payment page
-        return render(self.request, "payment.html")
+        # Render the payment page with Stripe public key
+        context = {
+            'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY
+        }
+        print(f"Using Stripe public key: {settings.STRIPE_PUBLIC_KEY}")  # Debug print
+        if not settings.STRIPE_PUBLIC_KEY:
+            messages.warning(self.request, "No Stripe public key configured.")
+        return render(self.request, "payment.html", context)
 
     def post(self, *args, **kwargs):
         form = PaymentForm(self.request.POST)
