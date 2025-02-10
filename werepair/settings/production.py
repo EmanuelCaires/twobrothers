@@ -49,5 +49,5 @@ DATABASES = {
     }
 }
 
-STRIPE_PUBLIC_KEY = config('STRIPE_LIVE_PUBLIC_KEY', default='')
-STRIPE_SECRET_KEY = config('STRIPE_LIVE_SECRET_KEY', default='')
+STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC_KEY', default='')
+STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET_KEY', default='')
