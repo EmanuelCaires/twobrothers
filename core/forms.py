@@ -50,19 +50,6 @@ class RefundForm(forms.Form):
     email = forms.EmailField()
 
 class PaymentForm(forms.Form):
-    stripeToken = forms.CharField(required=False)
+    stripeToken = forms.CharField(required=True)
     save = forms.BooleanField(required=False)
     use_default = forms.BooleanField(required=False)
-    
-    card_number = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={
-        'placeholder': 'Card Number',
-        'class': 'form-control'
-    }))
-    expiration_date = forms.CharField(max_length=7, required=True, widget=forms.TextInput(attrs={
-        'placeholder': 'MM/YY',
-        'class': 'form-control'
-    }))
-    cvc = forms.CharField(max_length=4, required=True, widget=forms.TextInput(attrs={
-        'placeholder': 'CVC',
-        'class': 'form-control'
-    }))

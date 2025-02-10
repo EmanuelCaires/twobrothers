@@ -139,17 +139,55 @@ class PaymentView(View):
         return render(self.request, "payment.html", context)
 
     def post(self, *args, **kwargs):
-        form = PaymentForm(self.request.POST)
-        if form.is_valid():
-            logger.info("Payment form is valid.")
-            # Process the payment...
-            # (Add your payment processing logic here)
-            messages.success(self.request, "Payment was successful!")
-            return redirect("core:order-summary")  # Redirect to order summary after payment
-        else:
-            logger.warning("Payment form is invalid: %s", form.errors)
-            messages.warning(self.request, "Invalid data received")
-            return redirect("/payment/stripe/")
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            token = self.request.POST.get('stripeToken')
+            
+            logger.info(f"Received token: {token}")
+            if not token:
+                messages.warning(self.request, "No payment token received")
+                return redirect("/payment/stripe/")
+
+            # Create the payment
+            amount = int(order.get_total() * 100)  # convert to cents
+            
+            try:
+                charge = stripe.Charge.create(
+                    amount=amount,
+                    currency="usd",
+                    source=token,
+                    description=f"Payment for order {order.id}"
+                )
+
+                # Create the payment
+                payment = Payment()
+                payment.stripe_charge_id = charge['id']
+                payment.user = self.request.user
+                payment.amount = order.get_total()
+                payment.save()
+
+                # Assign the payment to the order
+                order.ordered = True
+                order.payment = payment
+                order.ref_code = create_ref_code()
+                order.save()
+
+                messages.success(self.request, "Payment was successful!")
+                return redirect("core:order-summary")
+
+            except stripe.error.CardError as e:
+                messages.warning(self.request, f"Card Error: {e.error.message}")
+                return redirect("/payment/stripe/")
+            except stripe.error.InvalidRequestError as e:
+                messages.warning(self.request, "Invalid parameters")
+                return redirect("/payment/stripe/")
+            except Exception as e:
+                messages.warning(self.request, "Something went wrong. Please try again")
+                return redirect("/payment/stripe/")
+
+        except ObjectDoesNotExist:
+            messages.warning(self.request, "You do not have an active order")
+            return redirect("core:order-summary")
 
 class RequestRefundView(View):
     def get(self, *args, **kwargs):
