@@ -225,8 +225,7 @@ class PaymentView(View):
             if order.billing_address:
                 context = {
                     'order': order,
-                    'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
-                    'PAYPAL_CLIENT_ID': settings.PAYPAL_CLIENT_ID
+                    'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY
                 }
                 logger.info(f"Rendering payment page for order {order.id}")
                 return render(self.request, "payment.html", context)
@@ -297,82 +296,6 @@ class PaymentView(View):
         order.save()
         logger.info(f"Order {order.id} marked as paid")
         messages.success(self.request, "Payment was successful!")
-
-class CreatePayPalOrderView(View):
-    def post(self, *args, **kwargs):
-        try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
-            amount = str(order.get_total())
-
-            import requests
-            # Create PayPal order
-            url = f"{settings.PAYPAL_API_URL}/v2/checkout/orders"
-            payload = {
-                "intent": "CAPTURE",
-                "purchase_units": [{
-                    "amount": {
-                        "currency_code": "USD",
-                        "value": amount
-                    }
-                }]
-            }
-            headers = {
-                "Content-Type": "application/json",
-                "Authorization": f"Bearer {settings.PAYPAL_ACCESS_TOKEN}"
-            }
-            
-            response = requests.post(url, json=payload, headers=headers)
-            return JsonResponse(response.json())
-
-        except ObjectDoesNotExist:
-            return JsonResponse({"error": "No active order found"}, status=404)
-        except Exception as e:
-            logger.error(f"PayPal create order error: {str(e)}")
-            return JsonResponse({"error": str(e)}, status=500)
-
-class CompletePayPalOrderView(View):
-    def post(self, *args, **kwargs):
-        try:
-            data = json.loads(self.request.body)
-            order_id = data.get('orderID')
-            
-            # Verify the payment with PayPal
-            url = f"{settings.PAYPAL_API_URL}/v2/checkout/orders/{order_id}/capture"
-            headers = {
-                "Content-Type": "application/json",
-                "Authorization": f"Bearer {settings.PAYPAL_ACCESS_TOKEN}"
-            }
-            
-            response = requests.post(url, headers=headers)
-            paypal_data = response.json()
-
-            if response.status_code == 201:  # Payment successful
-                order = Order.objects.get(user=self.request.user, ordered=False)
-                
-                payment = Payment()
-                payment.paypal_order_id = order_id
-                payment.user = self.request.user
-                payment.amount = order.get_total()
-                payment.payment_method = 'P'  # P for PayPal
-                payment.save()
-
-                self._mark_order_as_paid(order, payment)
-                return JsonResponse({"status": "success"})
-            else:
-                return JsonResponse({"error": "Payment verification failed"}, status=400)
-
-        except ObjectDoesNotExist:
-            return JsonResponse({"error": "No active order found"}, status=404)
-        except Exception as e:
-            logger.error(f"PayPal complete order error: {str(e)}")
-            return JsonResponse({"error": str(e)}, status=500)
-
-    def _mark_order_as_paid(self, order, payment):
-        order.ordered = True
-        order.payment = payment
-        order.ref_code = create_ref_code()
-        order.save()
-        logger.info(f"Order {order.id} marked as paid")
 
 class OrderSummaryView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
