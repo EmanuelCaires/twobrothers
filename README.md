@@ -15,25 +15,31 @@ WEREPAIR.IO is an online platform specializing in selling smartphones, phone cas
 - **Performance Optimizations**: Ongoing improvements for faster load times.
 
 ## Wireframes
-### Desktop View
-Illustrating the main product listing page with categories, product cards, and a footer.
+### Desktop Views
+<div style="display: flex; gap: 10px;">
+    <a href="wireframes/wireframe_home.jpeg">
+        <img src="wireframes/wireframe_home.jpeg" width="200">
+    </a>
+    <a href="wireframes/wireframe_Cases.jpeg">
+        <img src="wireframes/wireframe_Cases.jpeg" width="200">
+    </a>
+    <a href="wireframes/wireframe_Phones.jpeg">
+        <img src="wireframes/wireframe_Phones.jpeg" width="200">
+    </a>
+    <a href="wireframes/wireframe_Re_Parts.jpeg">
+        <img src="wireframes/wireframe_Re_Parts.jpeg" width="200">
+    </a>
+</div>
 
-![Home Wireframe](wireframes/wireframe_home.jpeg)
-
-### Desktop Cases View
-![Cases Wireframe](wireframes/wireframe_Cases.jpeg)
-
-### Desktop Phones View
-![Phones Wireframe](wireframes/wireframe_Phones.jpeg)
-
-### Desktop Replacement Parts View
-![Replacement Parts Wireframe](wireframes/wireframe_Re_Parts.jpeg)
-
-### Tablet View
-![Home Tablet Wireframe](wireframes/wireframe_tablet_home.jpeg)
-
-### Mobile View
-![Mobile View Wireframe](wireframes/wireframes_mobile_view.jpeg)
+### Tablet & Mobile Views
+<div style="display: flex; gap: 10px;">
+    <a href="wireframes/wireframe_tablet_home.jpeg">
+        <img src="wireframes/wireframe_tablet_home.jpeg" width="200">
+    </a>
+    <a href="wireframes/wireframes_mobile_view.jpeg">
+        <img src="wireframes/wireframes_mobile_view.jpeg" width="200">
+    </a>
+</div>
 
 ## Lighthouse Performance Report
 Lighthouse results indicate areas of improvement for performance and accessibility:
@@ -41,23 +47,18 @@ Lighthouse results indicate areas of improvement for performance and accessibili
 - **Accessibility**: 83 (Good, but enhancements can be made for better readability and contrast.)
 - **Best Practices**: 96 (Well-structured but minor improvements possible.)
 
-
 ### Performance Improvements in Progress:
 - **Image Optimization**: Implementing lazy loading and compression.
 - **Code Splitting**: Reducing unnecessary scripts and improving load times.
 - **Caching Strategies**: Enhancing browser caching for faster page loads.
 - **Database Queries Optimization**: Reducing redundant queries for better efficiency.
 
-
 ## Database Schema
-The following diagram illustrates the database schema for WEREPAIR.IO:
-
-![Database Schema](wireframes/database_schema.png)
-
+<a href="wireframes/database_schema.png">
+    <img src="wireframes/database_schema.png" width="200">
+</a>
 
 ## Color Palette
-The following colors were used in the website design:
-
 | Element                | Color Code   |
 |------------------------|--------------|
 | Primary Navbar/Buttons | `#007BFF`    |
@@ -66,7 +67,9 @@ The following colors were used in the website design:
 | Footer Background      | `#6C757D`    |
 | Link Hover             | `#0056B3`    |
 
-![Colours](wireframes/Pallet_Colours.png)
+<a href="wireframes/Pallet_Colours.png">
+    <img src="wireframes/Pallet_Colours.png" width="200">
+</a>
 
 ## Deployment
 The project is deployed on Render and can be accessed at: [WEREPAIR.IO](https://werepair-io.onrender.com/)
@@ -92,37 +95,46 @@ python manage.py test
 | Footer Links        | Passed |
 
 ## Screenshots
-### Home Page
-![Home Page Screenshot](wireframes/home_screen_shot.png)
-
-### Phones List Page
-![Phones List Screenshot](wireframes/Phones_tab.png)
-
-### Cases List Page
-![Cases List Screenshot](wireframes/Cases_tab.png)
-
-### Parts List Page
-![Parts List Screenshot](wireframes/Replacement_parts_tab.png)
-
-### Sign In Page
-![Sign In Screenshot](wireframes/Sign_in.png)
-
-### Sign Up Page
-![Sign Up Screenshot](wireframes/Sign_up.png)
-
-### Order Summary Page
-![Order Summary Screenshot](wireframes/Order_sum.png)
-
-### Checkout Page
-![Checkout Screenshot](wireframes/checkout_form.png)
-
-### Payment Page
-![Payment List Screenshot](wireframes/Payment.png)
+### Various Screenshots
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+    <a href="wireframes/home_screen_shot.png">
+        <img src="wireframes/home_screen_shot.png" width="200">
+    </a>
+    <a href="wireframes/Phones_tab.png">
+        <img src="wireframes/Phones_tab.png" width="200">
+    </a>
+    <a href="wireframes/Cases_tab.png">
+        <img src="wireframes/Cases_tab.png" width="200">
+    </a>
+    <a href="wireframes/Replacement_parts_tab.png">
+        <img src="wireframes/Replacement_parts_tab.png" width="200">
+    </a>
+    <a href="wireframes/Sign_in.png">
+        <img src="wireframes/Sign_in.png" width="200">
+    </a>
+    <a href="wireframes/Sign_up.png">
+        <img src="wireframes/Sign_up.png" width="200">
+    </a>
+    <a href="wireframes/product_detail.png">
+        <img src="wireframes/product_detail.png" width="200">
+    </a>
+    <a href="wireframes/order_summary.png">
+        <img src="wireframes/order_summary.png" width="200">
+    </a>
+    <a href="wireframes/checkoutform.png">
+        <img src="wireframes/checkoutform.png" width="200">
+    </a>
+    <a href="wireframes/Payment.png">
+        <img src="wireframes/Payment.png" width="200">
+    </a>
+    <a href="wireframes/payment_sucess.png">
+        <img src="wireframes/payment_sucess.png" width="200">
+    </a>
+</div>
 
 ## Author
 This project was designed and implemented by Emanuel Caires.
 
 ---
 Made with 💙 for tech enthusiasts!
-
 
