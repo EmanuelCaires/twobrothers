@@ -269,7 +269,10 @@ class PaymentView(View):
                 logger.info(f"Payment record created: {payment.id}")
 
                 self._mark_order_as_paid(order, payment)
-                return redirect("core:order-summary")
+                # Pass the order to the payment success template
+                return render(self.request, "payment_success.html", {
+                    'order': order
+                })
 
             except stripe.error.CardError as e:
                 logger.error(f"Card error: {str(e)}")
@@ -295,7 +298,6 @@ class PaymentView(View):
         order.ref_code = create_ref_code()
         order.save()
         logger.info(f"Order {order.id} marked as paid")
-        messages.success(self.request, "Payment was successful!")
 
 class OrderSummaryView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
