@@ -8,101 +8,104 @@
 
         <!--Grid row-->
         <div class="row wow fadeIn">
+            <!--Grid column-->
+            <div class="col-md-6 mb-4">
+                {% if object.image %}
+                    <div class="view">
+                        <img src="{{ object.image.url }}" class="img-fluid product-image" alt="{{ object.name }}" loading="lazy">
+                    </div>
+                {% else %}
+                    <div class="view">
+                        <img src="{% static 'images/default-placeholder.png' %}" class="img-fluid product-image" alt="Placeholder" loading="lazy">
+                    </div>
+                {% endif %}
+            </div>
+            <!--Grid column-->
 
-            {% if object.image %}
-                <a href="{{ object.get_absolute_url }}">
-                    <img src="{{ object.image.url }}" class="img-fluid product-image" alt="{{ object.name }}" loading="lazy" srcset="{{ object.image.url }} 1x, {{ object.image.url }} 2x">
-                </a>
-            {% else %}
-                <a href="{{ object.get_absolute_url }}">
-                    <img src="{% static 'images/default-placeholder.png' %}" class="img-fluid product-image" alt="Placeholder" loading="lazy">
-                </a>
-            {% endif %}
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-md-6 mb-4">
-
-            <!--Content-->
-            <div class="p-4">
-
-                <div class="mb-3">
-                    <a href="">
+            <!--Grid column-->
+            <div class="col-md-6 mb-4">
+                <!--Content-->
+                <div class="p-4">
+                    <div class="mb-3">
                         <span class="badge purple mr-1">{{ object.category.name }}</span>
+                    </div>
+
+                    <p class="lead">
+                        {% if object.discount_price %}
+                        <span class="mr-1">
+                            <del>${{ object.price }}</del>
+                        </span>
+                        <span>${{ object.discount_price }}</span>
+                        {% else %}
+                        <span>${{ object.price }}</span>
+                        {% endif %}
+                    </p>
+
+                    <p class="lead font-weight-bold">Description</p>
+                    <p>{{ object.description }}</p>
+
+                    <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">
+                        Add to cart
+                        <i class="fas fa-shopping-cart ml-1"></i>
+                    </a>
+                    <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p">
+                        Remove from cart
                     </a>
                 </div>
-
-                <p class="lead">
-                    {% if object.discount_price %}
-                    <span class="mr-1">
-                        <del>${{ object.price }}</del>
-                    </span>
-                    <span>${{ object.discount_price }}</span>
-                    {% else %}
-                    <span>${{ object.price }}</span>
-                    {% endif %}
-                </p>
-
-                <p class="lead font-weight-bold">Description</p>
-                <p>{{ object.description }}</p>
-
-                <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">
-                    Add to cart
-                    <i class="fas fa-shopping-cart ml-1"></i>
-                </a>
-                <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p">
-                    Remove from cart
-                </a>
+                <!--Content-->
             </div>
-            <!--Content-->
-
+            <!--Grid column-->
         </div>
-        <!--Grid column-->
-
-    </div>
     <!--Grid row-->
 
     <hr>
 
     <!--Grid row-->
     <div class="row d-flex justify-content-center wow fadeIn">
-
         <!--Grid column-->
         <div class="col-md-6 text-center">
-
-            <h4 class="my-4 h4">Featured Products</h4>
-
-            <p>{{ object.additional_info }}</p>
-
+            <h4 class="my-4 h4">More from {{ object.category.name }}</h4>
         </div>
         <!--Grid column-->
-
     </div>
     <!--Grid row-->
 
     <!--Grid row-->
     <div class="row wow fadeIn">
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-12 mb-4">
-<img src="{% static 'items/11.webp' %}" class="img-fluid" alt="" loading="lazy">
-        </div>
-        <!--Grid column-->
-
+        {% for item in featured_items %}
         <!--Grid column-->
         <div class="col-lg-4 col-md-6 mb-4">
-<img src="{% static 'items/12.webp' %}" class="img-fluid" alt="" loading="lazy">
-        </div>
-        <!--Grid column-->
+            <div class="card h-100">
+                {% if item.image %}
+                <div class="view overlay">
+                    <img src="{{ item.image.url }}" class="card-img-top" style="max-height: 200px; object-fit: contain;" alt="{{ item.name }}" loading="lazy">
+                    <a href="{{ item.get_absolute_url }}">
+                        <div class="mask rgba-white-slight"></div>
+                    </a>
+                </div>
+                {% endif %}
 
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-<img src="{% static 'items/13.webp' %}" class="img-fluid" alt="" loading="lazy">
-        </div>
-        <!--Grid column-->
+                <div class="card-body text-center p-2">
+                    <h6 class="card-title mb-1">
+                        <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.name }}</a>
+                    </h6>
 
+                    <h6 class="font-weight-bold blue-text mb-1">
+                        {% if item.discount_price %}
+                        <strong>${{ item.discount_price }}</strong>
+                        <span class="grey-text"><small><s>${{ item.price }}</s></small></span>
+                        {% else %}
+                        <strong>${{ item.price }}</strong>
+                        {% endif %}
+                    </h6>
+
+                    <a href="{{ item.get_add_to_cart_url }}" class="btn btn-primary btn-sm px-2 mb-0">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
     <!--Grid row-->
 

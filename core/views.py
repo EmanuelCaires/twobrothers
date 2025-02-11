@@ -73,6 +73,16 @@ class ProductDetailView(DetailView):
     model = Item
     template_name = "product.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get 3 other items from the same category
+        context['featured_items'] = Item.objects.filter(
+            category=self.object.category
+        ).exclude(
+            id=self.object.id
+        ).order_by('?')[:3]  # Random order, limit to 3 items
+        return context
+
 class HomeView(ListView):
     model = Item
     paginate_by = 10
