@@ -28,8 +28,14 @@ LOGGING = {
     },
 }
 
-DEBUG = True  # Temporarily set to True for testing
+DEBUG = False
 ALLOWED_HOSTS = ['werepair-io.onrender.com', '127.0.0.1']
+
+# Email Configuration (SendGrid)
+EMAIL_BACKEND = 'core.sendgrid_backend.SendGridBackend'
+SENDGRID_API_KEY = config('SENDGRID_API_KEY', default='')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@werepair.io')
+SITE_NAME = 'WeRepair'
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
