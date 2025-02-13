@@ -34,15 +34,30 @@ ALLOWED_HOSTS = ['werepair-io.onrender.com', '127.0.0.1']
 # Static files configuration
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static_in_env'),
+]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files configuration
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
 
-# Configure WhiteNoise to serve media files
-WHITENOISE_MANIFEST_STRICT = False
-WHITENOISE_USE_FINDERS = True
-WHITENOISE_ROOT = MEDIA_ROOT
+# Copy media files to staticfiles during collectstatic
+import shutil
+media_static_dir = os.path.join(STATIC_ROOT, 'media')
+if os.path.exists(MEDIA_ROOT):
+    if not os.path.exists(media_static_dir):
+        os.makedirs(media_static_dir)
+    for item in os.listdir(MEDIA_ROOT):
+        source = os.path.join(MEDIA_ROOT, item)
+        dest = os.path.join(media_static_dir, item)
+        if os.path.isdir(source):
+            if os.path.exists(dest):
+                shutil.rmtree(dest)
+            shutil.copytree(source, dest)
+        else:
+            shutil.copy2(source, dest)
 
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
