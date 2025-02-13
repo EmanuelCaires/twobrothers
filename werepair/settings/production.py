@@ -35,6 +35,15 @@ ALLOWED_HOSTS = ['werepair-io.onrender.com', '127.0.0.1']
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# Media files configuration
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
+
+# Configure WhiteNoise to serve media files
+WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_ROOT = MEDIA_ROOT
+
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
