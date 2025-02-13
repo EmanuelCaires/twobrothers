@@ -31,33 +31,39 @@ LOGGING = {
 DEBUG = False
 ALLOWED_HOSTS = ['werepair-io.onrender.com', '127.0.0.1']
 
-# Static files configuration
+# Static Configuration
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static_in_env'),
 ]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files configuration
+# Media Configuration
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
 
-# Copy media files to staticfiles during collectstatic
+# Storage Configuration
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+DEFAULT_FILE_STORAGE = 'core.storage.MediaStorage'
+
+# WhiteNoise Configuration
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = True
+WHITENOISE_MANIFEST_STRICT = False
+
+# Copy existing media files to static directory
 import shutil
-media_static_dir = os.path.join(STATIC_ROOT, 'media')
+media_static = os.path.join(STATIC_ROOT, 'media')
 if os.path.exists(MEDIA_ROOT):
-    if not os.path.exists(media_static_dir):
-        os.makedirs(media_static_dir)
-    for item in os.listdir(MEDIA_ROOT):
-        source = os.path.join(MEDIA_ROOT, item)
-        dest = os.path.join(media_static_dir, item)
-        if os.path.isdir(source):
-            if os.path.exists(dest):
-                shutil.rmtree(dest)
-            shutil.copytree(source, dest)
-        else:
-            shutil.copy2(source, dest)
+    if not os.path.exists(media_static):
+        os.makedirs(media_static)
+    for root, dirs, files in os.walk(MEDIA_ROOT):
+        for file in files:
+            src = os.path.join(root, file)
+            rel_path = os.path.relpath(src, MEDIA_ROOT)
+            dst = os.path.join(media_static, rel_path)
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+            shutil.copy2(src, dst)
 
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

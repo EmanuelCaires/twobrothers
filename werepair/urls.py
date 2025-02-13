@@ -10,12 +10,12 @@ urlpatterns = [
     path('', include('core.urls', namespace='core')),
 ]
 
+# Debug toolbar and media serving for development
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]
-    # In debug mode, serve media and static files directly
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    # In debug mode, serve media files directly
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 else:
-    # In production, serve media files from staticfiles/media
-    urlpatterns += static(settings.MEDIA_URL, document_root=os.path.join(settings.STATIC_ROOT, 'media'))
+    # In production, serve media files through static
+    urlpatterns += static(settings.STATIC_URL + 'media/', document_root=os.path.join(settings.STATIC_ROOT, 'media'))
