@@ -31,14 +31,22 @@ LOGGING = {
 DEBUG = False
 ALLOWED_HOSTS = ['werepair-io.onrender.com', '127.0.0.1']
 
+# Static files configuration
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 SITE_NAME = 'WeRepair'
 
+# Session settings
+SESSION_COOKIE_AGE = 1209600  # 2 weeks
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_SECURE = True  # Use this in production
+
 # Admin configuration
 ADMINS = [('Emanuel Caires', 'emanuelcaires1@gmail.com')]
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
