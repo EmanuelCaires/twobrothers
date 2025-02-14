@@ -9,7 +9,9 @@ urlpatterns = [
     path('', include('core.urls', namespace='core')),
 ]
 
+# Always serve media files, regardless of DEBUG setting
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
