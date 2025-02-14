@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 import os
-import shutil
 
 class MediaStorage(FileSystemStorage):
     def __init__(self):
@@ -9,34 +8,29 @@ class MediaStorage(FileSystemStorage):
 
     def url(self, name):
         """
-        Override url method to serve files through static in production
+        Return URL for accessing the media file
         """
+        url = super().url(name)
         if not settings.DEBUG:
-            # In production, serve through static/media
-            return f"/static/media/{name}"
-        return super().url(name)
+            # In production, ensure media files are served from the correct path
+            url = f"{settings.STATIC_URL}media/{name}"
+        return url
 
-    def save(self, name, content, max_length=None):
+    def _save(self, name, content):
         """
-        Save the file and also copy it to staticfiles/media directory in production
+        Save the file and copy it to static/media in production
         """
-        name = super().save(name, content, max_length)
+        # Save to media directory
+        name = super()._save(name, content)
         
         if not settings.DEBUG:
-            # Copy to staticfiles/media directory
-            static_media_path = os.path.join(settings.STATIC_ROOT, 'media', name)
-            os.makedirs(os.path.dirname(static_media_path), exist_ok=True)
-            
-            # Ensure content is at the start
-            if hasattr(content, 'seek'):
-                content.seek(0)
+            # Also save to static/media for production
+            static_path = os.path.join(settings.STATIC_ROOT, 'media', name)
+            os.makedirs(os.path.dirname(static_path), exist_ok=True)
             
             # Copy the file
-            with open(static_media_path, 'wb') as static_file:
-                if hasattr(content, 'chunks'):
-                    for chunk in content.chunks():
-                        static_file.write(chunk)
-                else:
-                    shutil.copyfile(os.path.join(settings.MEDIA_ROOT, name), static_media_path)
+            with open(os.path.join(settings.MEDIA_ROOT, name), 'rb') as source:
+                with open(static_path, 'wb') as dest:
+                    dest.write(source.read())
         
         return name
