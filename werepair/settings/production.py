@@ -31,6 +31,18 @@ LOGGING = {
 DEBUG = False
 ALLOWED_HOSTS = ['werepair-io.onrender.com', '127.0.0.1']
 
+# Middleware Configuration
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise must be above all other middleware
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
 # Static Configuration
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -73,7 +85,7 @@ SITE_NAME = 'WeRepair'
 # Session settings
 SESSION_COOKIE_AGE = 1209600  # 2 weeks
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_COOKIE_SECURE = True  # Use this in production
+SESSION_COOKIE_SECURE = True
 
 # Admin configuration
 ADMINS = [('Emanuel Caires', 'emanuelcaires1@gmail.com')]
@@ -91,8 +103,8 @@ DATABASES = {
         'NAME': 'werepair_io',
         'USER': 'werepair_io_user',
         'PASSWORD': 'aFrB95herlY1tsJeIdl7McmBXoyxblwu',
-        'HOST': 'dpg-ctjus82j1k6c73cln0ug-a.frankfurt-postgres.render.com',  # Just the host here
-        'PORT': '5432',  # Default port
+        'HOST': 'dpg-ctjus82j1k6c73cln0ug-a.frankfurt-postgres.render.com',
+        'PORT': '5432',
     }
 }
 
