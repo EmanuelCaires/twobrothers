@@ -56,7 +56,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
 
 # Storage Configuration
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_FILE_STORAGE = 'core.storage.MediaStorage'
 
 # WhiteNoise Configuration
@@ -64,24 +64,8 @@ WHITENOISE_USE_FINDERS = True
 WHITENOISE_AUTOREFRESH = True
 WHITENOISE_MANIFEST_STRICT = False
 
-# Ensure media files are copied to static directory during deployment
-import os
-import shutil
-
-# Create media directory in static if it doesn't exist
-media_static = os.path.join(STATIC_ROOT, 'media')
-if not os.path.exists(media_static):
-    os.makedirs(media_static)
-
-# Copy existing media files to static directory
-if os.path.exists(MEDIA_ROOT):
-    for root, dirs, files in os.walk(MEDIA_ROOT):
-        for file in files:
-            src = os.path.join(root, file)
-            rel_path = os.path.relpath(src, MEDIA_ROOT)
-            dst = os.path.join(media_static, rel_path)
-            os.makedirs(os.path.dirname(dst), exist_ok=True)
-            shutil.copy2(src, dst)
+# Ensure media files are served through WhiteNoise
+WHITENOISE_ROOT = STATIC_ROOT
 
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
