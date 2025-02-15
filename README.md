@@ -90,6 +90,29 @@ The project is deployed on Render and can be accessed at: [WEREPAIR.IO](https://
     </a>
 </div>
 
+## Credits
+
+### Media
+- Product images sourced from:
+  - Apple's official website
+  - Huawei's official website
+  - Honor's official website
+  - Samsung's official website
+
+### Code
+- Python/Django code examples and best practices from:
+  - Django Official Documentation
+  - Python.org Documentation
+  - Real Python Tutorials
+- JavaScript implementations inspired by:
+  - MDN Web Docs
+  - JavaScript.info
+  - W3Schools Tutorials
+- Bootstrap components and styling adapted from:
+  - Bootstrap Official Documentation
+  - MDBootstrap Examples
+  - Creative Tim Templates
+
 ## Author
 This project was designed and implemented by Emanuel Caires.
 
