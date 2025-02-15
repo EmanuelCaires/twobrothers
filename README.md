@@ -3,6 +3,18 @@
 ## Description
 WEREPAIR.IO is an online platform specializing in selling smartphones, phone cases, and replacement parts. The website provides a seamless shopping experience with categorized product listings, a user-friendly cart system, and secure payment processing. It features a responsive design, ensuring accessibility across desktops, tablets, and mobile devices.
 
+## User Experience (UX)
+
+### Target Audience
+Identify the intended users of the platform, such as smartphone users, tech enthusiasts, and individuals looking for replacement parts.
+
+### User Stories
+- As a user, I want to easily find and purchase smartphones and accessories.
+- As a user, I want to track my orders and receive updates.
+
+### Design Choices
+Summarize design decisions, such as color schemes, typography, and layout choices that enhance user experience.
+
 ## Features
 - **User Authentication**: Secure login and signup functionality.
 - **Browse Products by Categories**: Phones, cases, and replacement parts.
@@ -14,62 +26,22 @@ WEREPAIR.IO is an online platform specializing in selling smartphones, phone cas
 - **Social Media Integration**: Footer with social media links for easy engagement.
 - **Performance Optimizations**: Ongoing improvements for faster load times.
 
-## Wireframes
-### Desktop Views
-<div style="display: flex; gap: 10px;">
-    <a href="wireframes/wireframe_home.jpeg">
-        <img src="wireframes/wireframe_home.jpeg" width="200">
-    </a>
-    <a href="wireframes/wireframe_Cases.jpeg">
-        <img src="wireframes/wireframe_Cases.jpeg" width="200">
-    </a>
-    <a href="wireframes/wireframe_Phones.jpeg">
-        <img src="wireframes/wireframe_Phones.jpeg" width="200">
-    </a>
-    <a href="wireframes/wireframe_Re_Parts.jpeg">
-        <img src="wireframes/wireframe_Re_Parts.jpeg" width="200">
-    </a>
-</div>
+## Technologies Used
+- **Languages**: Python, JavaScript
+- **Frameworks & Libraries**: Django, Bootstrap
+- **Tools & APIs**: Git, Render, Stripe API
 
-### Tablet & Mobile Views
-<div style="display: flex; gap: 10px;">
-    <a href="wireframes/wireframe_tablet_home.jpeg">
-        <img src="wireframes/wireframe_tablet_home.jpeg" width="200">
-    </a>
-    <a href="wireframes/wireframes_mobile_view.jpeg">
-        <img src="wireframes/wireframes_mobile_view.jpeg" width="200">
-    </a>
-</div>
+## Testing
+### Manual & Automated Testing
+- Ensure all features are tested manually.
+- Use automated tests to verify core functionalities.
 
-## Lighthouse Performance Report
-Lighthouse results indicate areas of improvement for performance and accessibility:
-- **Performance**: 39 (Needs optimization in image loading, caching, and script handling.)
-- **Accessibility**: 83 (Good, but enhancements can be made for better readability and contrast.)
-- **Best Practices**: 96 (Well-structured but minor improvements possible.)
-
-### Performance Improvements in Progress:
-- **Image Optimization**: Implementing lazy loading and compression.
-- **Code Splitting**: Reducing unnecessary scripts and improving load times.
-- **Caching Strategies**: Enhancing browser caching for faster page loads.
-- **Database Queries Optimization**: Reducing redundant queries for better efficiency.
-
-## Database Schema
-<a href="wireframes/database_schema.png">
-    <img src="wireframes/database_schema.png" width="200">
-</a>
-
-## Color Palette
-| Element                | Color Code   |
-|------------------------|--------------|
-| Primary Navbar/Buttons | `#007BFF`    |
-| Background             | `#F8F9FA`    |
-| Text (Primary)         | `#212529`    |
-| Footer Background      | `#6C757D`    |
-| Link Hover             | `#0056B3`    |
-
-<a href="wireframes/Pallet_Colours.png">
-    <img src="wireframes/Pallet_Colours.png" width="200">
-</a>
+### Example Test Results
+| Test Suite          | Status |
+|---------------------|--------|
+| User Authentication | Passed |
+| Product Filtering   | Passed |
+| Footer Links        | Passed |
 
 ## Deployment
 The project is deployed on Render and can be accessed at: [WEREPAIR.IO](https://werepair-io.onrender.com/)
@@ -79,20 +51,6 @@ The project is deployed on Render and can be accessed at: [WEREPAIR.IO](https://
 2. Navigate to the project directory: `cd werepair-io`
 3. Install dependencies: `pip install -r requirements.txt`
 4. Run the development server: `python manage.py runserver`
-
-## Testing
-### Unit Tests
-Run all tests using:
-```
-python manage.py test
-```
-
-### Example Test Results
-| Test Suite          | Status |
-|---------------------|--------|
-| User Authentication | Passed |
-| Product Filtering   | Passed |
-| Footer Links        | Passed |
 
 ## Screenshots
 ### Various Screenshots
@@ -137,4 +95,3 @@ This project was designed and implemented by Emanuel Caires.
 
 ---
 Made with 💙 for tech enthusiasts!
-
